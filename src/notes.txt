@@ -1,0 +1,80 @@
+// Setup the firebase
+// Export it for use 
+ const firebaseConfig = {
+    apiKey: "AIzaSyD_ccqzRo5NEFwHQ6vF2XEz6t3UI1p-KvE",
+    authDomain: "grading-app-e3907.firebaseapp.com",
+    databaseURL: "https://grading-app-e3907.firebaseio.com",
+    projectId: "grading-app-e3907",
+    storageBucket: "",
+    messagingSenderId: "293255755456",
+    appId: "1:293255755456:web:a53f09a30f6d27e9"
+  };
+ 
+// import firebase
+
+import { firebaseConfig} from './config/config';
+import firebase from 'firebase/app';
+import 'firebase/database';
+
+// Initiate firebase
+// Better to set it up in the constructor
+
+this.app = firebase.initializeApp(firebaseConfig);
+
+// Access firebase database
+
+this.app.database().ref('parent_folder');
+
+// Selecting a child in the parent folder
+
+this.app.database().ref('students/'+'child');
+
+// Add child to database
+
+this.database.push().set({
+    id : '',
+   name: 'name',
+  })
+
+//access the children using their firebase key. The key is like an index
+
+this.database.on('value', (data)=>{
+    const children = data.val()
+    let childrenNames = []
+    let keys= Object.keys(children)
+
+for (let i in keys){
+
+let item = keys[i]
+
+childrenNames.push(children[item].name)
+
+}
+  this.setState({
+    children : childrenNames
+  })
+})
+
+// dynamically add active class
+
+className= {this.state.clicked_item === e.id?'active studentList':'studentList'}
+
+
+authListener(){
+    this.app.auth().onAuthStateChanged((user)=>{
+      console.log(user);
+      if (user){
+        this.setState({user});
+        //localStorage.setItem('user', user.uid);
+  
+      }else {
+        this.state({user:null});
+        //localStorage.removeItem('user')
+      }
+    })
+  }
+
+
+
+  {this.state.user? (<home />):(<Login />)}
+

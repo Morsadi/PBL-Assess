@@ -1,26 +1,67 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Component } from "react";
+import fire  from "./config/config";
+import Home from './components/home'
+import Login from './login'
+import "firebase/auth";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+
+
+
+this.state = {
+  user: {}
+}
+
+this.authListener = this.authListener.bind(this)
+  }
+
+  componentDidMount(){
+    this.authListener()
+  }
+
+authListener(){
+
+fire.auth().onAuthStateChanged((user)=>{
+    console.log(user);
+    if (user){
+      this.setState({user: user});
+
+
+    }else {
+
+      this.setState({user:null});
+
+    }
+  })
+}
+
+componentWillUnmount(){
+this.authListener = undefined;
+}
+
+  render() {
+    return (
+      <div>
+
+          {this.state.user? <Home />:<Login />}
+
+
+      </div>
+    );
+  }
 }
 
 export default App;
+/*
+
+How to work componentWillUnmount on setTimeout and states?
+How can use the remote click if dom manipulation is a malpracrice?
+
+
+
+
+*/ 

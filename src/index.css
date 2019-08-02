@@ -5,9 +5,353 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: all 1s ease-out;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.grid{
+  display: grid;
+  grid-template-columns: 25% 74%;
+  grid-template-rows: 6% 90%;
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+  padding: 15px;
+  transition: all 1s ease-out;
 }
+
+
+
+.teacher_input{
+  width: 100%;
+  border-radius: 2px;
+  position: relative;
+  text-align: center;
+  align-items: stretch;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+  transition: all 1s ease-out;
+}
+
+.teacher_input input{
+  margin-top: 7px;
+  width: 80%;
+  height: 30px;
+  background:#2F2F2F;
+  outline: none;
+  border-width:0;
+  padding: 0 15px;
+  border-radius: 2px;
+  font-size: 18px;
+  font-family: Helvetica, sans-serif;
+  font-weight: 800;
+  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.25)!important;
+  transition: all 1s ease-out;
+  
+}
+
+
+.teacher_input button{
+  position: absolute;
+  visibility: hidden;
+}
+
+.teachers_column{
+  border-radius: 2px;
+  align-items: stretch;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25)!important;
+  padding: 20px;
+  overflow: scroll;
+  height: 94.2%;
+  transition: all 1s ease-out;
+}
+/* remove the scrolling bar*/
+.teachers_column, .teacher_info {
+  -ms-overflow-style: none;  
+  scrollbar-width: none; 
+}
+.teachers_column::-webkit-scrollbar, .teacher_info::-webkit-scrollbar { 
+  display: none; 
+}
+/* ------- */
+
+.setting{
+  width:100%;
+  border-radius: 2px;
+  align-items: stretch;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+  transition: all 1s ease-out;
+}
+
+.controls{ 
+  align-items: stretch;
+  border-radius: 2px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+
+  padding-left:20px;
+  position: relative;
+  transition: all 1s ease-out;
+}
+.teacher_info{
+  border-radius: 2px;
+  align-items: stretch;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  transition: all 1s ease-out;
+  overflow: scroll;
+  border-bottom: 20px solid;
+}
+.fas{
+  margin:10px 8px;
+  font-size: 23px;
+  cursor: pointer;
+  transition: all 1s ease-out;
+}
+.centralControls{
+  position: absolute;
+  top:0;
+  left:50%;
+  transform: translateX(-50%)
+}
+.signOutAlt{
+  position: absolute;
+  top:0;
+  right:20px;
+  font-size: 26px;
+  transition: all 1s ease-out;
+}
+
+
+.parentFlex, .parentFlex2 {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 60px;
+  margin-left: 80px;
+
+}
+
+
+.flex{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  transition: all 1s ease-out;
+}
+
+.flex input{
+  width: 60%;
+}
+.flex input{
+  border: none;
+    background: none;
+    border-bottom: 2px solid grey;
+    font-size: 20px;
+    outline: none;
+}
+.submit, .return{
+  margin-top: 100px;
+  width: 142px;
+height: 44px;
+border: 1px solid #C4C4C4;
+background: none;
+font-size: 18px;
+outline: none;
+font-weight: bold;
+transition: all 1s ease-out;
+cursor: pointer;
+}
+.submit:hover, .return:hover{
+  color: white!important;
+}
+.delete{
+  margin-top: 10px;
+  width: 142px;
+height: 44px;
+border: 1px solid #C4C4C4;
+background: none;
+font-size: 18px;
+outline: none;
+font-weight: bold;
+transition: all .3s ease-out;
+cursor: pointer;
+}
+
+.msgContainer{
+  font-size: 20px;
+  margin: 150px auto;
+}
+.teacherList{
+  font-size:20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.teacherList:hover{
+  color:rgb(208, 208, 208)
+}
+.active{
+  font-weight: 900;
+  font-size: 22px
+
+}
+
+.fadeIn-enter {
+  opacity: 0.001;
+  transition: opacity .8s ease-in-out;
+}
+
+.fadeIn-enter-active {
+  opacity: 1;
+  transition: opacity .8s ease-in-out;
+}
+.fadeIn-leave {
+  opacity: 1;
+  transition: opacity .8s ease-in-out;
+}
+.fadeIn-leave-active {
+  opacity: 0;
+  transition: opacity .8s ease-in-out;
+}
+
+
+/* table setting*/
+.hide{
+  border:none
+}
+table {
+  border-collapse: collapse;
+  width:100%;
+  font-size: 18px;
+}
+
+td, th {
+  border: 2px solid #C4C4C4;
+  padding: 5px 15px;
+
+}
+.values{
+  text-align: left;
+  padding: 20px;
+  font-size: 18px;
+  font-family: helvetica;
+  line-height: 21px;
+}
+
+
+table label{
+  position:relative;
+  cursor: pointer;
+  text-align: center;
+}
+
+table label input{
+  display:none;
+}
+
+table label div{
+  position:relative;
+  background: none;
+  width: 20px;
+  height:20px;
+  padding: 10px;
+  border-radius: 50%;
+  text-align: center;
+  border: 2px solid #C4C4C4;
+  margin: 0 auto;
+}
+table label div:hover{
+  background: #c4c4c41a;
+}
+.categories{
+  font-weight: bold
+}
+
+
+table label input:checked ~ div:before{
+content: '';
+  position:absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #6290C3;
+  width:50%;
+  height:50%;
+  border-radius: 50%;
+}
+.updateMessage{
+  font-size: 110%;
+    font-weight: 500;
+    background: #f0f0f0;
+    color: #4b4b4b;
+    width: 50%;
+    margin: 60px auto;
+    height: 73px;
+    padding-top: 49px;
+    font-weight: 800;
+    
+}
+.login{
+  background: #2F2F2F;
+}
+.login form{
+position: absolute;
+top:50%;
+left:50%;
+transform: translate(-50%, -50%);
+display: grid;
+
+}
+.login form input{
+  width: 300px;
+  height: 50px;
+  padding: 0 30px;
+  font-size: 20px;
+  margin: 2px;
+background: none;
+border: 1px solid #B0B0B0;
+color: #B0B0B0;
+outline: none;
+}
+
+#loginBtn{
+  width: 300px;
+  height: 50px;
+  padding:0;
+  background: #B0B0B0;
+  margin: 30px auto;
+  color: #2F2F2F;
+  font-weight: bold
+}
+
+
+@media screen and (max-width: 600px) {
+  .teacher_info{
+    margin-left:40px;
+    width:65%;
+    
+    }
+    .teachers_column{
+    width: 100%
+    }
+    
+    .teacher_input form input{
+    
+    width: 55%;
+    }
+    .controles{
+    
+    width: 90%;
+    }
+    .leftControls{
+    margin-left: -20px!important;
+    }
+    .centralControls{
+    margin-left: 27px;
+    }
+    .parentFlex, .parentFlex2 {
+      display: inline;
+
+    }
+    .updateMessage{
+      width: 100%
+    }
+}
+
+
