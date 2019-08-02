@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Morsadi/teacher-assess.git/static/css/main.dee0730d.chunk.css",
-    "main.js": "/Morsadi/teacher-assess.git/static/js/main.0bfa9d92.chunk.js",
-    "main.js.map": "/Morsadi/teacher-assess.git/static/js/main.0bfa9d92.chunk.js.map",
-    "runtime~main.js": "/Morsadi/teacher-assess.git/static/js/runtime~main.9e635d90.js",
-    "runtime~main.js.map": "/Morsadi/teacher-assess.git/static/js/runtime~main.9e635d90.js.map",
-    "static/js/2.1fe651b6.chunk.js": "/Morsadi/teacher-assess.git/static/js/2.1fe651b6.chunk.js",
-    "static/js/2.1fe651b6.chunk.js.map": "/Morsadi/teacher-assess.git/static/js/2.1fe651b6.chunk.js.map",
-    "index.html": "/Morsadi/teacher-assess.git/index.html",
-    "precache-manifest.776f7bfb39e5143ebd6dce434fdbca12.js": "/Morsadi/teacher-assess.git/precache-manifest.776f7bfb39e5143ebd6dce434fdbca12.js",
-    "service-worker.js": "/Morsadi/teacher-assess.git/service-worker.js",
-    "static/css/main.dee0730d.chunk.css.map": "/Morsadi/teacher-assess.git/static/css/main.dee0730d.chunk.css.map"
+    "main.css": "./static/css/main.dee0730d.chunk.css",
+    "main.js": "./static/js/main.605c9fa1.chunk.js",
+    "main.js.map": "./static/js/main.605c9fa1.chunk.js.map",
+    "runtime~main.js": "./static/js/runtime~main.d653cc00.js",
+    "runtime~main.js.map": "./static/js/runtime~main.d653cc00.js.map",
+    "static/js/2.9c7dcaac.chunk.js": "./static/js/2.9c7dcaac.chunk.js",
+    "static/js/2.9c7dcaac.chunk.js.map": "./static/js/2.9c7dcaac.chunk.js.map",
+    "index.html": "./index.html",
+    "precache-manifest.8e3bb50a7fce4b2a1b6400bdefc1e490.js": "./precache-manifest.8e3bb50a7fce4b2a1b6400bdefc1e490.js",
+    "service-worker.js": "./service-worker.js",
+    "static/css/main.dee0730d.chunk.css.map": "./static/css/main.dee0730d.chunk.css.map"
   }
 }
