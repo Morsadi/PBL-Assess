@@ -354,4 +354,8 @@ outline: none;
     }
 }
 
-
+.mobileVersion h2{
+text-align: center;
+margin: 200px auto;
+color: #2F2F2F
+}
