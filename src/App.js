@@ -56,12 +56,3 @@ this.authListener = undefined;
 }
 
 export default App;
-/*
-
-How to work componentWillUnmount on setTimeout and states?
-How can use the remote click if dom manipulation is a malpracrice?
-
-
-
-
-*/ 
