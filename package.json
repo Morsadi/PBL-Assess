@@ -1,6 +1,6 @@
 {
-  "homepage": "https://morsadi.github.io/teacher-assess",
-  "name": "gradingapp",
+  "homepage": ".",
+  "name": "teacher-assess",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
