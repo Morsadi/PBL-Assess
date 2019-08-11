@@ -66,7 +66,7 @@ this.authListener = undefined;
       !this.state.isMobile?
       <div>
 
-          {this.state.user? <Home user={this.state.user} />:<Login />}
+          {this.state.user? <Home userId={this.state.userId} />:<Login />}
 
 
       </div>:<div className='mobileVersion'><h2>Mobile version coming soon.</h2></div>

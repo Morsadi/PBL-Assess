@@ -68,7 +68,7 @@ class Home extends Component {
    // this.app = firebase.initializeApp(firebaseConfig);
 
    
-   this.database = fire.database().ref("teachersInfo");
+   this.database = fire.database().ref(this.props.userId+ "/teachersInfo");
   }
 
 
@@ -83,7 +83,6 @@ class Home extends Component {
 
   componentDidMount() {
     
-    console.log(this.props.user)
 
 
       //disable delete btn onload
