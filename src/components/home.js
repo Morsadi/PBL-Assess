@@ -1,6 +1,7 @@
 import React from "react";
 import { Component } from "react";
 import  fire  from "../config/config";
+import "firebase/auth";
 import "firebase/database";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,11 +18,10 @@ import About from './about'
 
 var CSSTransitionGroup = require("react-transition-group/CSSTransitionGroup");
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    // this.app = firebase.initializeApp(firebaseConfig);
-    this.database = fire.database().ref("teachersInfo");
+     
 
     this.state = {
       windowHeight: window.innerHeight,
@@ -50,7 +50,9 @@ class Home extends Component {
       is_home_active: false,
       isIt_night: true,
       isIt_day:false,
-      infoMsg: ""
+      infoMsg: "",
+      userId: ''
+
     };
 
     //binding functions
@@ -62,6 +64,11 @@ class Home extends Component {
     this.toggleProfile = this.toggleProfile.bind(this);
 
     //----------
+
+   // this.app = firebase.initializeApp(firebaseConfig);
+
+   
+   this.database = fire.database().ref("teachersInfo");
   }
 
 
@@ -69,7 +76,16 @@ class Home extends Component {
 
   
   //fetching the saved teachers onlaod
+  
+  
+
+    
+
   componentDidMount() {
+    
+    console.log(this.props.user)
+
+
       //disable delete btn onload
     const confirmBtn = document.getElementById('confirmBtn')
     const updateBtn = document.getElementById('updateBtn')
@@ -101,6 +117,7 @@ class Home extends Component {
   //unmout events when logout 
   componentWillUnmount(){
     this.database.off()
+    
   }
 
   //sync input
@@ -132,7 +149,7 @@ class Home extends Component {
       const allteacher = document.getElementsByClassName("teacherList");
       let lastteacher = allteacher[allteacher.length - 1];
       lastteacher.click();
-      console.log(lastteacher)
+
     }, 500);
 
   }
@@ -426,8 +443,8 @@ bringNight(){
               current_phone={this.state.current_teacher_phone}
               teacher_id={this.state.teacher_id}
               current_country={this.state.current_teacher_country}
-              teacherRef={fire.database().ref(`/teachersInfo/${this.state.teacher_id}`)}
-              database={fire.database().ref("teachersInfo")}
+              teacherRef={fire.database().ref(this.props.userId + `/teachersInfo/${this.state.teacher_id}`)}
+              database={fire.database().ref(this.props.userId + "/teachersInfo")}
               state={this.state.teachers}
               clearteachers={this.clearteachers}
               fetch={this.fetch}
@@ -442,9 +459,9 @@ bringNight(){
           {this.state.is_doc_active ? <Doc 
           teacherRef={fire
             .database()
-            .ref(`/teachersInfo/${this.state.teacher_id}`)}
+            .ref(this.props.userId + `/teachersInfo/${this.state.teacher_id}`)}
             teacher_id={this.state.teacher_id}
-          database={fire.database().ref("teachersInfo")}
+          database={fire.database().ref(this.props.userId + "/teachersInfo")}
           text_color={this.state.text_color}
           btn_color={this.state.btn_color}
               btn_hover_color={this.state.btn_hover_color}

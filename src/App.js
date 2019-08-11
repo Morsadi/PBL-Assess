@@ -15,6 +15,7 @@ class App extends Component {
 
 this.state = {
   user: {},
+  userId: '',
   isMobile: false
 }
 
@@ -32,12 +33,19 @@ this.authListener = this.authListener.bind(this)
     }
   }
 
+  
+
+  
 authListener(){
 
+
+
+
+
+
 fire.auth().onAuthStateChanged((user)=>{
-    console.log(user);
     if (user){
-      this.setState({user: user});
+      this.setState({user: user, userId: user.uid});
 
 
     }else {
@@ -58,7 +66,7 @@ this.authListener = undefined;
       !this.state.isMobile?
       <div>
 
-          {this.state.user? <Home />:<Login />}
+          {this.state.user? <Home user={this.state.user} />:<Login />}
 
 
       </div>:<div className='mobileVersion'><h2>Mobile version coming soon.</h2></div>
