@@ -25,12 +25,15 @@ this.authListener = this.authListener.bind(this)
 
 
   componentDidMount(){
+
+
     this.authListener();
     if(window.innerWidth <= 600){
       this.setState({
         isMobile: true
       })
     }
+
   }
 
   
@@ -41,9 +44,7 @@ authListener(){
 
 
 
-
-
-fire.auth().onAuthStateChanged((user)=>{
+  this.fireBaseListener = fire.auth().onAuthStateChanged((user)=>{
     if (user){
       this.setState({user: user, userId: user.uid});
 
@@ -57,7 +58,9 @@ fire.auth().onAuthStateChanged((user)=>{
 }
 
 componentWillUnmount(){
-this.authListener = undefined;
+  this.fireBaseListener()
+
+
 }
 
   render() {
@@ -66,7 +69,7 @@ this.authListener = undefined;
       !this.state.isMobile?
       <div>
 
-          {this.state.user? <Home userId={this.state.userId} />:<Login />}
+          {this.state.user? <Home />:<Login />}
 
 
       </div>:<div className='mobileVersion'><h2>Mobile version coming soon.</h2></div>

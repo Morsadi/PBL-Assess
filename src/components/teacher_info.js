@@ -80,7 +80,7 @@ if (this.state.name_input){
     showMessage: 'block'
   })
   
-  setTimeout(()=>{
+  this.interval = setTimeout(()=>{
     this.setState({
     showMessage: 'none'
   })
@@ -101,22 +101,11 @@ if (this.state.name_input){
       }
 
       //if last 
-      setTimeout(() => {
+      this.last = setTimeout(() => {
         const firstteacher = document.getElementsByClassName("teacherList")[document.getElementsByClassName("teacherList").length -1];
         if (firstteacher) {
           firstteacher.click();
-          console.log(firstteacher)
-       }//else {
-      //     this.setState({
-      //       name_input: "",
-      // age_input: "",
-      // gender_input: "",
-      // email_input: "",
-      // phone_input: "",
-      // country_input: "",
-      //     })
-          
-      //   }
+       } 
       }, 850);
     }
 
@@ -177,6 +166,10 @@ hoverOff(e){
 }
 
 
+componentWillUnmount(){
+clearInterval(this.interval)
+clearInterval(this.last)
+}
   render() {
     return (
       <div style={{ textAlign: "center", color: this.props.text_color }}>
