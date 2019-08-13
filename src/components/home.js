@@ -45,13 +45,14 @@ class Home extends Component {
       current_teacher_phone: "",
       current_teacher_email: "",
       current_teacher_country: "",
-      is_profile_active: true,
+      is_profile_active: false,
       is_doc_active: false,
-      is_home_active: false,
+      is_home_active: true,
       isIt_night: true,
       isIt_day:false,
       infoMsg: "",
-      userId: ''
+      userId: '',
+
 
     };
 
@@ -65,9 +66,6 @@ class Home extends Component {
 
     //----------
 
-   // this.app = firebase.initializeApp(firebaseConfig);
-
-  //  this.database = fire.database().ref(userId+ "/teachersInfo");
 
   }
 
@@ -81,6 +79,7 @@ componentDidMount(){
   //fetching the saved teachers onlaod
   loadData() {
     
+    //if logged in, fetch data based on the user id
  this.authListener = fire.auth().onAuthStateChanged((user)=>{
 
 
@@ -104,7 +103,7 @@ if (user){
     this.database.on("value", data => {
       const teachers = data.val();
       let teacherList = [];
-
+//loop through teachers
       if (teachers) {
         let keys = Object.keys(teachers);
         for (let i in keys) {
@@ -134,7 +133,7 @@ if (user){
     });
   }
 
-  //add teachers to the database
+  //push the new teacher to the database
   addteacher(e) {
 
 
@@ -473,9 +472,8 @@ componentWillUnmount(){
           ) : null}
 
           {this.state.is_doc_active ? <Doc 
-          teacherRef={fire
-            .database()
-            .ref(this.state.userId + `/teachersInfo/${this.state.teacher_id}`)}
+          teacherRef={
+            fire.database().ref(this.state.userId + `/teachersInfo/${this.state.teacher_id}`)}
             teacher_id={this.state.teacher_id}
           database={fire.database().ref(this.state.userId + "/teachersInfo")}
           text_color={this.state.text_color}
