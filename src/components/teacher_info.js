@@ -8,19 +8,8 @@ class Teacher extends Component {
   constructor(props) {
     super(props);
 
-    //binding functions
-    this.handleChange = this.handleChange.bind(this);
-
     this.state = {
       displayContent: "block",
-      id: "",
-      name_input: "",
-      age_input: "",
-      gender_input: "",
-      email_input: "",
-      phone_input: "",
-      country_input: "",
-      teacherRef: "",
       showMessage: "none",
       displayMessage: "none",
       message: "",
@@ -28,72 +17,45 @@ class Teacher extends Component {
     };
   }
 
-  //store props in this component's state
- componentWillReceiveProps(nextProps) {
-    this.setState({
-      id: nextProps.teacher_id,
-      name_input: nextProps.current_teacher,
-      age_input: nextProps.current_age,
-      gender_input: nextProps.current_gender,
-      email_input: nextProps.current_email,
-      phone_input: nextProps.current_phone,
-      country_input: nextProps.current_country,
-      teacherRef: nextProps.teacherRef
-    });
-    
-   
-
-  }
-
-  //syncing all inputs with the state
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
-
   // push the new data to firebase
   update() {
-    if (this.state.name_input) {
+    if (this.props.teacher.name !== "") {
       this.props.teacherRef.update({
-        full_name: this.state.name_input ? this.state.name_input : "",
-        age: this.state.age_input ? this.state.age_input : "",
-        gender: this.state.gender_input ? this.state.gender_input : "",
-        email: this.state.email_input ? this.state.email_input : "",
-        phone: this.state.phone_input ? this.state.phone_input : "",
-        country: this.state.country_input ? this.state.country_input : ""
+        full_name: this.props.teacher.name
+          ? this.props.teacher.name
+          : "Unknown",
+        age: this.props.teacher.age ? this.props.teacher.age : "",
+        gender: this.props.teacher.gender ? this.props.teacher.gender : "",
+        email: this.props.teacher.email ? this.props.teacher.email : "",
+        phone: this.props.teacher.phone ? this.props.teacher.phone : "",
+        country: this.props.teacher.country ? this.props.teacher.country : ""
       });
 
-      //highlight the new teacher added
-      const clickedteacher = document.getElementById(this.state.id);
-      if (clickedteacher) {
-        clickedteacher.click();
-      }
-    }
-    //show the confirmation message
-    this.setState({
-      showMessage: "block"
-    });
-    //hide the confirmation message
-    this.interval = setTimeout(() => {
+      //show the confirmation message
       this.setState({
-        showMessage: "none"
+        showMessage: "block"
       });
-    }, 3000);
+      //hide the confirmation message
+      this.interval = setTimeout(() => {
+        this.setState({
+          showMessage: "none"
+        });
+      }, 3000);
+    }
   }
 
   //delete teacher
   removeteacher() {
-    if (this.state.teacherRef) {
-      this.state.teacherRef.remove();
+    if (this.props.teacherRef) {
+      this.props.teacherRef.remove();
 
       //Clear parent state after deleting the last teacher on the list
-      if (this.props.state.length === 1) {
+      if (this.props.teachers.length === 1) {
         this.props.clearteachers();
         this.props.toggleProfile(false);
       }
 
-      //if last
+      //select next teacher the current is deleted
       this.last = setTimeout(() => {
         const lastTeacher = document.getElementsByClassName("teacherList")[
           document.getElementsByClassName("teacherList").length - 1
@@ -115,7 +77,7 @@ class Teacher extends Component {
   comfirmDeletion() {
     let msg =
       "Are you sure you want to delete " +
-      this.state.name_input +
+      this.props.teacher.name +
       " from the list?";
 
     const firstteacher = document.getElementsByClassName("teacherList")[
@@ -131,7 +93,7 @@ class Teacher extends Component {
     }
   }
 
-  //to close the delete section after deleting the teacher
+  //close the confirmation section after deleting the teacher
   closeMsg() {
     this.setState({
       displayContent: "block",
@@ -139,27 +101,29 @@ class Teacher extends Component {
     });
   }
 
+  //btn hovers
   hoverOn(e) {
-    if (this.state.id) {
+    if (this.props.teacher.id) {
       e.target.style.background = "#AB3F3F";
       e.target.style.color = "white";
     }
   }
   hoverOff(e) {
-    if (this.state.id) {
+    if (this.props.teacher.id) {
       e.target.style.background = "none";
-      e.target.style.color = this.props.text_color;
+      e.target.style.color = this.props.style.text_color;
     }
   }
 
-  //clearn intervals
+  //unmount intervals
   componentWillUnmount() {
     clearInterval(this.interval);
     clearInterval(this.last);
   }
+
   render() {
     return (
-      <div style={{ textAlign: "center", color: this.props.text_color }}>
+      <div style={{ textAlign: "center", color: this.props.style.text_color }}>
         <div style={{ display: this.state.displayContent }}>
           <div className="parentFlex">
             <div className="flex">
@@ -167,35 +131,44 @@ class Teacher extends Component {
 
               <input
                 type="text"
-                onChange={this.handleChange}
-                value={this.state.name_input}
+                onChange={e => {
+                  const { target } = e;
+                  const name = target.value;
+                  this.props.updateTeacher("name", name);
+                }}
+                value={this.props.teacher.name}
                 placeholder=""
-                name="name_input"
-                style={{ color: this.props.text_color }}
+                style={{ color: this.props.style.text_color }}
               />
             </div>
             <div className="flex">
               <h3 className="items keys">Age</h3>
 
               <input
-                style={{ color: this.props.text_color }}
+                style={{ color: this.props.style.text_color }}
                 type="text"
-                onChange={this.handleChange}
-                value={this.state.age_input}
+                onChange={e => {
+                  const { target } = e;
+                  const age = target.value;
+                  this.props.updateTeacher("age", age);
+                }}
+                value={this.props.teacher.age}
                 placeholder=""
-                name="age_input"
               />
             </div>
             <div className="flex">
               <h3 className="items keys">Gender</h3>
 
               <input
-                style={{ color: this.props.text_color }}
+                style={{ color: this.props.style.text_color }}
                 type="text"
-                onChange={this.handleChange}
-                value={this.state.gender_input}
+                onChange={e => {
+                  const { target } = e;
+                  const gender = target.value;
+                  this.props.updateTeacher("gender", gender);
+                }}
+                value={this.props.teacher.gender}
                 placeholder=""
-                name="gender_input"
               />
             </div>
           </div>
@@ -205,44 +178,53 @@ class Teacher extends Component {
               <h3 className="items keys">Phone Number </h3>
 
               <input
-                style={{ color: this.props.text_color }}
+                style={{ color: this.props.style.text_color }}
                 type="text"
-                onChange={this.handleChange}
-                value={this.state.phone_input}
+                onChange={e => {
+                  const { target } = e;
+                  const phone = target.value;
+                  this.props.updateTeacher("phone", phone);
+                }}
+                value={this.props.teacher.phone}
                 placeholder=""
-                name="phone_input"
               />
             </div>
             <div className="flex">
               <h3 className="items keys">Country</h3>
 
               <input
-                style={{ color: this.props.text_color }}
+                style={{ color: this.props.style.text_color }}
                 type="text"
-                onChange={this.handleChange}
-                value={this.state.country_input}
+                onChange={e => {
+                  const { target } = e;
+                  const country = target.value;
+                  this.props.updateTeacher("country", country);
+                }}
+                value={this.props.teacher.country}
                 placeholder=""
-                name="country_input"
               />
             </div>
             <div className="flex">
               <h3 className="items keys">Email</h3>
 
               <input
-                style={{ color: this.props.text_color }}
+                style={{ color: this.props.style.text_color }}
                 type="text"
-                onChange={this.handleChange}
-                value={this.state.email_input}
+                onChange={e => {
+                  const { target } = e;
+                  const email = target.value;
+                  this.props.updateTeacher("email", email);
+                }}
+                value={this.props.teacher.email}
                 placeholder=""
-                name="email_input"
               />
             </div>
           </div>
 
           <button
             style={{
-              color: this.props.btn_text,
-              background: this.props.btn_color
+              color: this.props.style.btn_text,
+              background: this.props.style.btn_color
             }}
             onClick={this.update.bind(this)}
             className="submit"
@@ -253,7 +235,7 @@ class Teacher extends Component {
 
           <br />
           <button
-            style={{ color: this.props.text_color }}
+            style={{ color: this.props.style.text_color }}
             onClick={this.comfirmDeletion.bind(this)}
             className="delete"
             id="confirmBtn"
@@ -262,11 +244,12 @@ class Teacher extends Component {
           >
             Delete
           </button>
+
           <h2
             className="updateMessage"
             style={{ display: this.state.showMessage }}
           >
-            <strong>{this.state.name_input} </strong> has been updated
+            <strong>{this.props.teacher.name} </strong> has been updated
           </h2>
         </div>
         {/* display when click on first delete to comfirm deletion */}
@@ -275,8 +258,9 @@ class Teacher extends Component {
           style={{ display: this.state.displayMessage }}
         >
           <h4>{this.state.message}</h4>
+
           <button
-            style={{ color: this.props.text_color }}
+            style={{ color: this.props.style.text_color }}
             onClick={this.removeteacher.bind(this)}
             className="delete"
             onMouseEnter={this.hoverOn.bind(this)}
@@ -285,7 +269,7 @@ class Teacher extends Component {
             Delete
           </button>
           <button
-            style={{ color: this.props.text_color }}
+            style={{ color: this.props.style.text_color }}
             className="return"
             onClick={this.closeMsg.bind(this)}
           >

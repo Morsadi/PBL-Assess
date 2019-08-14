@@ -280,11 +280,13 @@ content: '';
     font-weight: 500;
     background: #f0f0f0;
     color: #4b4b4b;
-    width: 50%;
+    width: 40%;
     margin: 60px auto;
-    height: 73px;
-    padding-top: 49px;
+    height: 53px;
+    padding-top: 27px;
     font-weight: 800;
+    border-radius: 6em;
+    transition: all 1s ease-in-out;
     
 }
 .login{
