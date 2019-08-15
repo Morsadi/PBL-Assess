@@ -283,7 +283,7 @@ class Home extends Component {
   bringDay() {
     this.setState({
       style: {
-        // using []...] to change only the new keys, otherwise it would replace the whole array wiht the new one, losing the old keys that werent addressed
+        // using [...] to change only the new keys, otherwise it would replace the whole array wiht the new one, losing the old keys that werent addressed.
         ...this.state.style,
         bg_color: "#BFBFBF",
         body_color: "#FFFFFF",
@@ -302,7 +302,7 @@ class Home extends Component {
   bringNight() {
     this.setState({
       style: {
-        // using [...] to change only the new keys, otherwise it would replace the whole array wiht the new one, losing the old keys that werent addressed
+        // using [...] to change only the new keys, otherwise it would replace the whole array wiht the new one, losing the old keys that werent addressed.
         ...this.state.style,
         bg_color: "#2F2F2F",
         body_color: "#4B4B4B",

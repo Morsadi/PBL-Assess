@@ -157,7 +157,8 @@ class Teacher extends Component {
                 onChange={e => {
                   const { target } = e;
                   let age = target.value;
-                  if (age === Number(age)) {
+
+                  if (!isNaN(age)) {
                     this.props.updateTeacher("age", age);
                   }
                 }}
@@ -173,14 +174,16 @@ class Teacher extends Component {
                 type="text"
                 onChange={e => {
                   const { target } = e;
-                  const gender = target.value;
+                  let gender = target.value;
+                  //capitalize first letter ;
+                  gender = gender.charAt(0).toUpperCase() + gender.substring(1)
                   this.props.updateTeacher("gender", gender);
                 }}
                 value={this.props.teacher.gender}
                 placeholder=""
               />
-            </div>
           </div>
+            </div>
 
           <div className="parentFlex2">
             <div className="flex">
@@ -194,7 +197,7 @@ class Teacher extends Component {
                   const { target } = e;
                   let phone = target.value;
 
-                  if (phone === Number(phone)) {
+                  if (!isNaN(phone)) {
                     this.props.updateTeacher("phone", phone);
                   }
                 }}
