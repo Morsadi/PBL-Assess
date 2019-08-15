@@ -38,11 +38,15 @@ render(){
 
     return (
         <div className='login' style={{height: window.innerHeight, textAlign: 'center'}}>
+        <img alt='logo' src={require('./assets/logo.png')} />
 <form>
-<input onChange={this.eventHandler} value={this.state.email} type='email' placeholder='email' name='email' />
-<input onChange={this.eventHandler} value={this.state.password} type='password' placeholder='password' name='password' />
-<input id='loginBtn' onClick={this.login} type='submit' value='Submit' />
+    
+<input onChange={this.eventHandler} value={this.state.email} type='email' placeholder='EMAIL' name='email' />
+<input onChange={this.eventHandler} value={this.state.password} type='password' placeholder='PASSWORD' name='password' />
+<input id='loginBtn' onClick={this.login} type='submit' value='LOGIN' />
+
 </form>
+
 
 
         </div>

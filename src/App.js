@@ -42,9 +42,8 @@ class App extends Component {
   }
 
   render() {
-    return !this.state.isMobile ? (
-      <div>{this.state.user ? <Home /> : <Login />}</div>
-    ) : (
+    return !this.state.isMobile ? (<div>{this.state.user ? <Home /> : <Login />}</div>) : 
+    (
       <div className="mobileVersion">
         <h2>Mobile version coming soon.</h2>
       </div>

@@ -50,7 +50,6 @@ class TeacherAssessment extends Component {
         boxes: boxesChecked
       });
 
-
       //show msg when update
       this.setState({
         showMessage: ""
@@ -73,9 +72,7 @@ class TeacherAssessment extends Component {
   render() {
     return (
       <div style={{ textAlign: "center", color: this.props.style.text_color }}>
-        <h1 style={{ marginBottom: "80px" }}>
-          PROJECT BASED TEACHING RUBRIC
-        </h1>
+        <h1 style={{ marginBottom: "80px" }}>PROJECT BASED TEACHING RUBRIC</h1>
         <table>
           <thead>
             <tr>

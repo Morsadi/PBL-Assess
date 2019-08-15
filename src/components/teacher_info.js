@@ -133,7 +133,13 @@ class Teacher extends Component {
                 type="text"
                 onChange={e => {
                   const { target } = e;
-                  const name = target.value;
+                  let name = target.value;
+                  //capitalize first letter of each word
+                  name = name
+                    .toLowerCase()
+                    .split(" ")
+                    .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+                    .join(" ");
                   this.props.updateTeacher("name", name);
                 }}
                 value={this.props.teacher.name}
@@ -145,12 +151,15 @@ class Teacher extends Component {
               <h3 className="items keys">Age</h3>
 
               <input
-                style={{ color: this.props.style.text_color }}
+                maxLength="2"
                 type="text"
+                style={{ color: this.props.style.text_color }}
                 onChange={e => {
                   const { target } = e;
-                  const age = target.value;
-                  this.props.updateTeacher("age", age);
+                  let age = target.value;
+                  if (age === Number(age)) {
+                    this.props.updateTeacher("age", age);
+                  }
                 }}
                 value={this.props.teacher.age}
                 placeholder=""
@@ -180,10 +189,14 @@ class Teacher extends Component {
               <input
                 style={{ color: this.props.style.text_color }}
                 type="text"
+                maxLength="10"
                 onChange={e => {
                   const { target } = e;
-                  const phone = target.value;
-                  this.props.updateTeacher("phone", phone);
+                  let phone = target.value;
+
+                  if (phone === Number(phone)) {
+                    this.props.updateTeacher("phone", phone);
+                  }
                 }}
                 value={this.props.teacher.phone}
                 placeholder=""
@@ -197,7 +210,13 @@ class Teacher extends Component {
                 type="text"
                 onChange={e => {
                   const { target } = e;
-                  const country = target.value;
+                  let country = target.value;
+                  //capitalize first letter of each word
+                  country = country
+                    .toLowerCase()
+                    .split(" ")
+                    .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+                    .join(" ");
                   this.props.updateTeacher("country", country);
                 }}
                 value={this.props.teacher.country}

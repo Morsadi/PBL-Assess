@@ -292,6 +292,10 @@ content: '';
 .login{
   background: #2F2F2F;
 }
+.login img{
+  margin: 160px auto;
+  width: 170px;
+}
 .login form{
 position: absolute;
 top:50%;
@@ -313,13 +317,15 @@ outline: none;
 }
 
 #loginBtn{
-  width: 300px;
+  width: 160px;
   height: 50px;
-  padding:0;
-  background: #B0B0B0;
+  padding: 0;
+  background: #ffffff;
   margin: 30px auto;
   color: #2F2F2F;
-  font-weight: bold
+  font-weight: bold;
+  border-radius: 2em;
+  cursor: pointer;
 }
 
 
@@ -388,4 +394,9 @@ transition: all .8s ease-out;
   text-decoration: none;
   font-weight: 800;
   transition: all .8s ease-out;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }

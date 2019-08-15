@@ -78,13 +78,6 @@ class Home extends Component {
     });
   };
 
-  // updateTeacher = (teacher) => {
-  //   this.setState({
-  //     ...this.state,
-  //     teacher
-  //   })
-  // }
-
   componentDidMount() {
     this.loadData();
   }
@@ -137,8 +130,17 @@ class Home extends Component {
 
   //sync input
   update_teacher_input(event) {
+    let value = event.target.value;
+
+    //capitalize first letter of each word
+    value = value
+      .toLowerCase()
+      .split(" ")
+      .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+      .join(" ");
+
     this.setState({
-      add_teacher_input: event.target.value
+      add_teacher_input: value
     });
   }
 
@@ -504,7 +506,9 @@ class Home extends Component {
             />
           ) : null}
 
-          {this.state.is_home_active ? <About style={this.state.style}/> : null}
+          {this.state.is_home_active ? (
+            <About style={this.state.style} />
+          ) : null}
         </div>
       </div>
     );
