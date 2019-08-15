@@ -9,7 +9,7 @@ class TeacherAssessment extends Component {
     super(props);
 
     this.state = {
-      showMessage: "block"
+      showMessage: "none"
     };
 
     //bind functions
@@ -74,7 +74,7 @@ class TeacherAssessment extends Component {
     return (
       <div style={{ textAlign: "center", color: this.props.style.text_color }}>
         <h1 style={{ marginBottom: "80px" }}>
-          PROJECT BASED EDUCATOR ASSESEMENT
+          PROJECT BASED TEACHING RUBRIC
         </h1>
         <table>
           <thead>

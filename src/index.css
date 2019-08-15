@@ -280,7 +280,7 @@ content: '';
     font-weight: 500;
     background: #f0f0f0;
     color: #4b4b4b;
-    width: 40%;
+    width: 60%;
     margin: 60px auto;
     height: 53px;
     padding-top: 27px;
@@ -360,4 +360,32 @@ outline: none;
 text-align: center;
 margin: 200px auto;
 color: #2F2F2F
+}
+.about{
+  text-align: center;
+    padding: 50px 200px;
+}
+
+.about p{
+  line-height: 1.6;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  transition: all .8s ease-out;
+}
+
+.about h1{
+padding-bottom: 20px;
+color: #fff;
+transition: all .8s ease-out;
+}
+.quote{
+  font-style: italic;
+  transition: all .8s ease-out;
+}
+.quote a{
+
+  text-decoration: none;
+  font-weight: 800;
+  transition: all .8s ease-out;
 }

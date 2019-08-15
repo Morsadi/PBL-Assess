@@ -29,7 +29,7 @@ class Home extends Component {
         bg_color: "#2F2F2F",
         body_color: "#4B4B4B",
         navBar_color: "#4B4B4B",
-        text_color: "#B0B0B0",
+        text_color: "#fff",
         icon_color: "#C4C4C4",
         input_bgColor: "#2F2F2F",
         btn_color: "none",
@@ -305,7 +305,7 @@ class Home extends Component {
         bg_color: "#2F2F2F",
         body_color: "#4B4B4B",
         navBar_color: "#4B4B4B",
-        text_color: "#B0B0B0",
+        text_color: "#fff",
         icon_color: "#C4C4C4",
         input_bgColor: "#2F2F2F",
         btn_color: "none",
@@ -504,7 +504,7 @@ class Home extends Component {
             />
           ) : null}
 
-          {this.state.is_home_active ? <About /> : null}
+          {this.state.is_home_active ? <About style={this.state.style}/> : null}
         </div>
       </div>
     );
