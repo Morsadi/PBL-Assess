@@ -1,14 +1,14 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: all 1s ease-out;
 }
 
-.grid{
+.grid {
   display: grid;
   grid-template-columns: 25% 74%;
   grid-template-rows: 6% 90%;
@@ -18,9 +18,7 @@ body {
   transition: all 1s ease-out;
 }
 
-
-
-.teacher_input{
+.teacher_input {
   width: 100%;
   border-radius: 2px;
   position: relative;
@@ -30,66 +28,66 @@ body {
   transition: all 1s ease-out;
 }
 
-.teacher_input input{
+.teacher_input input {
   margin-top: 7px;
   width: 80%;
   height: 30px;
-  background:#2F2F2F;
+  background: #2f2f2f;
   outline: none;
-  border-width:0;
+  border-width: 0;
   padding: 0 15px;
   border-radius: 2px;
   font-size: 18px;
   font-family: Helvetica, sans-serif;
   font-weight: 800;
-  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.25)!important;
+  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.25) !important;
   transition: all 1s ease-out;
-  
 }
 
-
-.teacher_input button{
+.teacher_input button {
   position: absolute;
   visibility: hidden;
 }
 
-.teachers_column{
+.teachers_column {
   border-radius: 2px;
   align-items: stretch;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25)!important;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25) !important;
   padding: 20px;
   overflow: scroll;
   height: 94.2%;
   transition: all 1s ease-out;
 }
 /* remove the scrolling bar*/
-.teachers_column, .teacher_info {
-  -ms-overflow-style: none;  
-  scrollbar-width: none; 
+.teachers_column,
+.teacher_info {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-.teachers_column::-webkit-scrollbar, .teacher_info::-webkit-scrollbar { 
-  display: none; 
+.teachers_column::-webkit-scrollbar,
+.teacher_info::-webkit-scrollbar {
+  display: none;
 }
 /* ------- */
 
-.setting{
-  width:100%;
+.setting {
+  width: 100%;
   border-radius: 2px;
   align-items: stretch;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
   transition: all 1s ease-out;
 }
 
-.controls{ 
+.controls {
   align-items: stretch;
   border-radius: 2px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
 
-  padding-left:20px;
+  padding-left: 20px;
   position: relative;
   transition: all 1s ease-out;
 }
-.teacher_info{
+.teacher_info {
   border-radius: 2px;
   align-items: stretch;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
@@ -98,37 +96,35 @@ body {
   overflow: scroll;
   border-bottom: 20px solid;
 }
-.fas{
-  margin:10px 8px;
+.fas {
+  margin: 10px 8px;
   font-size: 23px;
   cursor: pointer;
   transition: all 1s ease-out;
 }
-.centralControls{
+.centralControls {
   position: absolute;
-  top:0;
-  left:50%;
-  transform: translateX(-50%)
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
-.signOutAlt{
+.signOutAlt {
   position: absolute;
-  top:0;
-  right:20px;
+  top: 0;
+  right: 20px;
   font-size: 26px;
   transition: all 1s ease-out;
 }
 
-
-.parentFlex, .parentFlex2 {
+.parentFlex,
+.parentFlex2 {
   display: flex;
   justify-content: space-around;
   margin-top: 60px;
   margin-left: 80px;
-
 }
 
-
-.flex{
+.flex {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -136,97 +132,97 @@ body {
   transition: all 1s ease-out;
 }
 
-.flex input{
+.flex input {
   width: 60%;
 }
-.flex input{
+.flex input {
   border: none;
-    background: none;
-    border-bottom: 2px solid grey;
-    font-size: 20px;
-    outline: none;
+  background: none;
+  border-bottom: 2px solid grey;
+  font-size: 20px;
+  outline: none;
 }
-.submit, .return{
+.submit,
+.return {
   margin-top: 100px;
   width: 142px;
-height: 44px;
-border: 1px solid #C4C4C4;
-background: none;
-font-size: 18px;
-outline: none;
-font-weight: bold;
-transition: all 1s ease-out;
-cursor: pointer;
+  height: 44px;
+  border: 1px solid #c4c4c4;
+  background: none;
+  font-size: 18px;
+  outline: none;
+  font-weight: bold;
+  transition: all 1s ease-out;
+  cursor: pointer;
 }
-.submit:hover, .return:hover{
-  color: white!important;
+.submit:hover,
+.return:hover {
+  color: white !important;
 }
-.delete{
+.delete {
   margin-top: 10px;
   width: 142px;
-height: 44px;
-border: 1px solid #C4C4C4;
-background: none;
-font-size: 18px;
-outline: none;
-font-weight: bold;
-transition: all .3s ease-out;
-cursor: pointer;
+  height: 44px;
+  border: 1px solid #c4c4c4;
+  background: none;
+  font-size: 18px;
+  outline: none;
+  font-weight: bold;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
 }
 
-.msgContainer{
+.msgContainer {
   font-size: 20px;
   margin: 150px auto;
 }
-.teacherList{
-  font-size:20px;
+.teacherList {
+  font-size: 20px;
   cursor: pointer;
   font-weight: 600;
 }
-.teacherList:hover{
-  color:rgb(208, 208, 208)
+.teacherList:hover {
+  color: rgb(208, 208, 208);
 }
-.active{
+.active {
   font-weight: 900;
-  font-size: 22px
-
+  font-size: 22px;
 }
 
 .fadeIn-enter {
   opacity: 0.001;
-  transition: opacity .8s ease-in-out;
+  transition: opacity 0.8s ease-in-out;
 }
 
 .fadeIn-enter-active {
   opacity: 1;
-  transition: opacity .8s ease-in-out;
+  transition: opacity 0.8s ease-in-out;
 }
 .fadeIn-leave {
   opacity: 1;
-  transition: opacity .8s ease-in-out;
+  transition: opacity 0.8s ease-in-out;
 }
 .fadeIn-leave-active {
   opacity: 0;
-  transition: opacity .8s ease-in-out;
+  transition: opacity 0.8s ease-in-out;
 }
 
-
 /* table setting*/
-.hide{
-  border:none
+.hide {
+  border: none;
 }
 table {
   border-collapse: collapse;
-  width:100%;
+  width: 100%;
   font-size: 18px;
 }
 
-td, th {
-  border: 2px solid #C4C4C4;
+td,
+th {
+  border: 2px solid #c4c4c4;
   padding: 5px 15px;
-
 }
-.values{
+.values {
   text-align: left;
   padding: 20px;
   font-size: 18px;
@@ -234,169 +230,160 @@ td, th {
   line-height: 21px;
 }
 
-
-table label{
-  position:relative;
+table label {
+  position: relative;
   cursor: pointer;
   text-align: center;
 }
 
-table label input{
-  display:none;
+table label input {
+  display: none;
 }
 
-table label div{
-  position:relative;
+table label div {
+  position: relative;
   background: none;
   width: 20px;
-  height:20px;
+  height: 20px;
   padding: 10px;
   border-radius: 50%;
   text-align: center;
-  border: 2px solid #C4C4C4;
+  border: 2px solid #c4c4c4;
   margin: 0 auto;
 }
-table label div:hover{
+table label div:hover {
   background: #c4c4c41a;
 }
-.categories{
-  font-weight: bold
+.categories {
+  font-weight: bold;
 }
 
-
-table label input:checked ~ div:before{
-content: '';
-  position:absolute;
-  top:50%;
+table label input:checked ~ div:before {
+  content: '';
+  position: absolute;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #6290C3;
-  width:50%;
-  height:50%;
+  background: #6290c3;
+  width: 50%;
+  height: 50%;
   border-radius: 50%;
 }
-.updateMessage{
+.updateMessage {
   font-size: 110%;
-    font-weight: 500;
-    background: #f0f0f0;
-    color: #4b4b4b;
-    width: 60%;
-    margin: 60px auto;
-    height: 53px;
-    padding-top: 27px;
-    font-weight: 800;
-    border-radius: 6em;
-    transition: all 1s ease-in-out;
-    
+  font-weight: 500;
+  background: #f0f0f0;
+  color: #4b4b4b;
+  width: 60%;
+  margin: 60px auto;
+  height: 53px;
+  padding-top: 27px;
+  font-weight: 800;
+  border-radius: 6em;
+  transition: all 1s ease-in-out;
 }
-.login{
-  background: #2F2F2F;
+.login {
+  background: #2f2f2f;
 }
-.login img{
+.login img {
   margin: 160px auto;
   width: 170px;
 }
-.login form{
-position: absolute;
-top:50%;
-left:50%;
-transform: translate(-50%, -50%);
-display: grid;
-
+.login form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
 }
-.login form input{
+.login form input {
   width: 300px;
   height: 50px;
   padding: 0 30px;
   font-size: 20px;
   margin: 2px;
-background: none;
-border: 1px solid #B0B0B0;
-color: #B0B0B0;
-outline: none;
+  background: none;
+  border: 1px solid #b0b0b0;
+  color: #b0b0b0;
+  outline: none;
 }
 
-#loginBtn{
+#loginBtn {
   width: 160px;
   height: 50px;
   padding: 0;
   background: #ffffff;
   margin: 30px auto;
-  color: #2F2F2F;
+  color: #2f2f2f;
   font-weight: bold;
   border-radius: 2em;
   cursor: pointer;
 }
 
-
 @media screen and (max-width: 600px) {
-  .teacher_info{
-    margin-left:40px;
-    width:65%;
-    
-    }
-    .teachers_column{
-    width: 100%
-    }
-    
-    .teacher_input form input{
-    
+  .teacher_info {
+    margin-left: 40px;
+    width: 65%;
+  }
+  .teachers_column {
+    width: 100%;
+  }
+
+  .teacher_input form input {
     width: 55%;
-    }
-    .controles{
-    
+  }
+  .controles {
     width: 90%;
-    }
-    .leftControls{
-    margin-left: -20px!important;
-    }
-    .centralControls{
+  }
+  .leftControls {
+    margin-left: -20px !important;
+  }
+  .centralControls {
     margin-left: 27px;
-    }
-    .parentFlex, .parentFlex2 {
-      display: inline;
-
-    }
-    .updateMessage{
-      width: 100%;
-    }
+  }
+  .parentFlex,
+  .parentFlex2 {
+    display: inline;
+  }
+  .updateMessage {
+    width: 100%;
+  }
 }
 
-.mobileVersion h2{
-text-align: center;
-margin: 200px auto;
-color: #2F2F2F
-}
-.about{
+.mobileVersion h2 {
   text-align: center;
-    padding: 50px 200px;
+  margin: 200px auto;
+  color: #2f2f2f;
+}
+.about {
+  text-align: center;
+  padding: 50px 200px;
 }
 
-.about p{
+.about p {
   line-height: 1.6;
   font-size: 18px;
   font-weight: 500;
   color: #fff;
-  transition: all .8s ease-out;
+  transition: all 0.8s ease-out;
 }
 
-.about h1{
-padding-bottom: 20px;
-color: #fff;
-transition: all .8s ease-out;
+.about h1 {
+  padding-bottom: 20px;
+  color: #fff;
+  transition: all 0.8s ease-out;
 }
-.quote{
+.quote {
   font-style: italic;
-  transition: all .8s ease-out;
+  transition: all 0.8s ease-out;
 }
-.quote a{
-
+.quote a {
   text-decoration: none;
   font-weight: 800;
-  transition: all .8s ease-out;
+  transition: all 0.8s ease-out;
 }
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

@@ -1,31 +1,30 @@
-import React from "react";
-import { Component } from "react";
-// import firebase from 'firebase/app';
-import "firebase/database";
-import "firebase/storage";
+import React, { Component } from 'react';
+
+import 'firebase/database';
+import 'firebase/storage';
 
 class TeacherAssessment extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      showMessage: "none"
+      showMessage: 'none',
     };
-
-    //bind functions
 
     this.updateBoxes = this.updateBoxes.bind(this);
   }
 
   componentDidMount() {
-    //onload, import the ids of the checkboxes stored in firebase and activate them in DOM
-    this.props.teacherRef.once("value", data => {
+    const { teacherRef } = this.props;
+    // onload, import the ids of the checkboxes stored in firebase and activate them in DOM
+
+    teacherRef.once('value', data => {
       const teacher = data.val();
       if (teacher) {
-        const boxes = teacher.boxes;
+        const { boxes } = teacher;
 
-        for (let i in boxes) {
-          let boxId = boxes[i];
+        for (const i in boxes) {
+          const boxId = boxes[i];
           const input = document.getElementById(boxId);
 
           input.checked = true;
@@ -34,50 +33,55 @@ class TeacherAssessment extends Component {
     });
   }
 
-  updateBoxes() {
-    //if teacher is active and update button is clicked, loop through all the checkboxes and push then to one array
-    if (this.props.teacher.id) {
-      const boxes = document.getElementsByClassName("boxes");
+  // clear interval
+  componentWillUnmount() {
+    clearInterval(this.hideMsg);
+  }
 
-      let boxesChecked = [];
-      for (let i in boxes) {
+  updateBoxes() {
+    const { teacher, teacherRef } = this.props;
+
+    // if teacher is active and update button is clicked, loop through all the checkboxes and push then to one array
+    if (teacher.id) {
+      const boxes = document.getElementsByClassName('boxes');
+
+      const boxesChecked = [];
+
+      for (const i in boxes) {
         if (boxes[i].checked) {
           boxesChecked.push(boxes[i].id);
         }
       }
-      //push the array to firebase
-      this.props.teacherRef.update({
-        boxes: boxesChecked
+      // push the array to firebase
+      teacherRef.update({
+        boxes: boxesChecked,
       });
 
-      //show msg when update
+      // show msg when update
       this.setState({
-        showMessage: ""
+        showMessage: '',
       });
 
-      //hide msg when update
+      // hide msg when update
       this.hideMsg = setTimeout(() => {
         this.setState({
-          showMessage: "none"
+          showMessage: 'none',
         });
       }, 3000);
     }
   }
 
-  //clear interval
-  componentWillUnmount() {
-    clearInterval(this.hideMsg);
-  }
-
   render() {
+    const { style } = this.props;
+    const { showMessage } = this.state;
     return (
-      <div style={{ textAlign: "center", color: this.props.style.text_color }}>
-        <h1 style={{ marginBottom: "80px" }}>PROJECT BASED TEACHING RUBRIC</h1>
+      <div style={{ textAlign: 'center', color: style.text_color }}>
+        <h1 style={{ marginBottom: '80px' }}>PROJECT BASED TEACHING RUBRIC</h1>
         <table>
           <thead>
             <tr>
-              <th className="hide"></th>
-              <th className="hide"></th>
+              <th className="hide" />
+              <th className="hide" />
               <th>Novice </th>
               <th>Specialist</th>
               <th>Master</th>
@@ -95,19 +99,19 @@ class TeacherAssessment extends Component {
               <td>
                 <label>
                   <input type="radio" className="boxes" id="1" name="one" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="2" name="one" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="3" name="one" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -121,19 +125,19 @@ class TeacherAssessment extends Component {
               <td>
                 <label>
                   <input type="radio" className="boxes" id="4" name="two" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="5" name="two" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="6" name="two" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -146,19 +150,19 @@ class TeacherAssessment extends Component {
               <td>
                 <label>
                   <input type="radio" className="boxes" id="7" name="three" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="8" name="three" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="9" name="three" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -169,24 +173,24 @@ class TeacherAssessment extends Component {
               </td>
               <td className="values">
                 Criteria for products are clearly and specifically derived from
-                standards and allows demonstration of mastery.{" "}
+                standards and allows demonstration of mastery.{' '}
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="10" name="four" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="11" name="four" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="12" name="four" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -200,19 +204,19 @@ class TeacherAssessment extends Component {
               <td>
                 <label>
                   <input type="radio" className="boxes" id="13" name="five" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="14" name="five" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="15" name="five" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -228,19 +232,19 @@ class TeacherAssessment extends Component {
               <td>
                 <label>
                   <input type="radio" className="boxes" id="16" name="six" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="17" name="six" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="18" name="six" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -249,24 +253,24 @@ class TeacherAssessment extends Component {
               <td className="values">
                 Student voice and choice is regularly leveraged and ongoing,
                 including identification of real-world issues and problems
-                students want to address in projects.{" "}
+                students want to address in projects.{' '}
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="19" name="seven" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="20" name="seven" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="21" name="seven" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -279,19 +283,19 @@ class TeacherAssessment extends Component {
               <td>
                 <label>
                   <input type="radio" className="boxes" id="22" name="eight" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="23" name="eight" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="24" name="eight" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -305,19 +309,19 @@ class TeacherAssessment extends Component {
               <td>
                 <label>
                   <input type="radio" className="boxes" id="25" name="nine" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="26" name="nine" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="27" name="nine" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -331,19 +335,19 @@ class TeacherAssessment extends Component {
               <td>
                 <label>
                   <input type="radio" className="boxes" id="28" name="ten" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="29" name="ten" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="30" name="ten" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -357,19 +361,19 @@ class TeacherAssessment extends Component {
               <td>
                 <label>
                   <input type="radio" className="boxes" id="31" name="eleven" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="32" name="eleven" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="33" name="eleven" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -381,24 +385,24 @@ class TeacherAssessment extends Component {
 
               <td className="values">
                 The classroom features an appropriate mixture of individual and
-                team work time, whole group and small group instruction.{" "}
+                team work time, whole group and small group instruction.{' '}
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="34" name="twelve" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="35" name="twelve" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="36" name="twelve" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -416,7 +420,7 @@ class TeacherAssessment extends Component {
                     id="37"
                     name="thriteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -427,7 +431,7 @@ class TeacherAssessment extends Component {
                     id="38"
                     name="thriteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -438,7 +442,7 @@ class TeacherAssessment extends Component {
                     id="39"
                     name="thriteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -457,7 +461,7 @@ class TeacherAssessment extends Component {
                     id="40"
                     name="fourteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -468,7 +472,7 @@ class TeacherAssessment extends Component {
                     id="41"
                     name="fourteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -479,7 +483,7 @@ class TeacherAssessment extends Component {
                     id="42"
                     name="fourteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -497,7 +501,7 @@ class TeacherAssessment extends Component {
                     id="43"
                     name="fifteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -508,7 +512,7 @@ class TeacherAssessment extends Component {
                     id="44"
                     name="fifteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -519,7 +523,7 @@ class TeacherAssessment extends Component {
                     id="45"
                     name="fifteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -538,7 +542,7 @@ class TeacherAssessment extends Component {
                     id="46"
                     name="sixteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -549,7 +553,7 @@ class TeacherAssessment extends Component {
                     id="47"
                     name="sixteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -560,7 +564,7 @@ class TeacherAssessment extends Component {
                     id="48"
                     name="sixteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -573,7 +577,7 @@ class TeacherAssessment extends Component {
               <td className="values">
                 Each student receives necessary instructional supports to access
                 content, skills, and resources; these supports are removed when
-                no longer needed.{" "}
+                no longer needed.{' '}
               </td>
               <td>
                 <label>
@@ -583,7 +587,7 @@ class TeacherAssessment extends Component {
                     id="49"
                     name="seventeen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -594,7 +598,7 @@ class TeacherAssessment extends Component {
                     id="50"
                     name="seventeen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -605,7 +609,7 @@ class TeacherAssessment extends Component {
                     id="51"
                     name="seventeen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -615,7 +619,7 @@ class TeacherAssessment extends Component {
                 Scaffolding is guided as much as possible by students’ questions
                 and needs; teacher does not “front-load” too much information at
                 the start of the project, but waits until it is needed or
-                requested by students.{" "}
+                requested by students.{' '}
               </td>
               <td>
                 <label>
@@ -625,7 +629,7 @@ class TeacherAssessment extends Component {
                     id="52"
                     name="eighteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -636,7 +640,7 @@ class TeacherAssessment extends Component {
                     id="53"
                     name="eighteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -647,7 +651,7 @@ class TeacherAssessment extends Component {
                     id="54"
                     name="eighteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -656,7 +660,7 @@ class TeacherAssessment extends Component {
               <td className="values">
                 Key success skills are taught using a variety of tools and
                 strategies; students are provided with opportunities to practice
-                and apply them, and reflect on progress.{" "}
+                and apply them, and reflect on progress.{' '}
               </td>
               <td>
                 <label>
@@ -666,7 +670,7 @@ class TeacherAssessment extends Component {
                     id="55"
                     name="nineteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -677,7 +681,7 @@ class TeacherAssessment extends Component {
                     id="56"
                     name="nineteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -688,7 +692,7 @@ class TeacherAssessment extends Component {
                     id="57"
                     name="nineteen"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -696,12 +700,12 @@ class TeacherAssessment extends Component {
             <tr>
               <td className="values">
                 Student inquiry is facilitated and scaffolded, while allowing
-                students to act and think as independently as possible.{" "}
+                students to act and think as independently as possible.{' '}
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="58" name="twenty" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -712,13 +716,13 @@ class TeacherAssessment extends Component {
                     id="100"
                     name="twenty"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="59" name="twenty" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -731,7 +735,7 @@ class TeacherAssessment extends Component {
               <td className="values">
                 Project products and other sources of evidence are used to
                 thoroughly assess subject-area standards as well as success
-                skills.{" "}
+                skills.{' '}
               </td>
               <td>
                 <label>
@@ -741,7 +745,7 @@ class TeacherAssessment extends Component {
                     id="60"
                     name="twentyOne"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -752,7 +756,7 @@ class TeacherAssessment extends Component {
                     id="61"
                     name="thwentyOne"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -763,7 +767,7 @@ class TeacherAssessment extends Component {
                     id="62"
                     name="thwentyOne"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -771,7 +775,7 @@ class TeacherAssessment extends Component {
             <tr>
               <td className="values">
                 Individual student learning is adequately assessed, not just
-                team-created products.{" "}
+                team-created products.{' '}
               </td>
               <td>
                 <label>
@@ -781,7 +785,7 @@ class TeacherAssessment extends Component {
                     id="63"
                     name="twentyTwo"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -792,7 +796,7 @@ class TeacherAssessment extends Component {
                     id="64"
                     name="twentyTwo"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -803,7 +807,7 @@ class TeacherAssessment extends Component {
                     id="65"
                     name="twentyTwo"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -811,7 +815,7 @@ class TeacherAssessment extends Component {
             <tr>
               <td className="values">
                 Formative assessment is used regularly and frequently, with a
-                variety of tools and processes.{" "}
+                variety of tools and processes.{' '}
               </td>
               <td>
                 <label>
@@ -821,7 +825,7 @@ class TeacherAssessment extends Component {
                     id="66"
                     name="twentyThree"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -832,7 +836,7 @@ class TeacherAssessment extends Component {
                     id="67"
                     name="twentyThree"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -843,7 +847,7 @@ class TeacherAssessment extends Component {
                     id="68"
                     name="twentyThree"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -853,7 +857,7 @@ class TeacherAssessment extends Component {
                 Structured protocols for critique and revision are used
                 regularly at checkpoints; students give and receive effective
                 feedback to inform instructional decisions and students’
-                actions.{" "}
+                actions.{' '}
               </td>
               <td>
                 <label>
@@ -863,7 +867,7 @@ class TeacherAssessment extends Component {
                     id="69"
                     name="twentyFour"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -874,7 +878,7 @@ class TeacherAssessment extends Component {
                     id="70"
                     name="twentyFour"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -885,7 +889,7 @@ class TeacherAssessment extends Component {
                     id="71"
                     name="twentyFour"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -894,7 +898,7 @@ class TeacherAssessment extends Component {
               <td className="values">
                 Regular, structured opportunities are provided for students to
                 self-assess their progress and, when appropriate, assess peers
-                on their performance.{" "}
+                on their performance.{' '}
               </td>
               <td>
                 <label>
@@ -904,7 +908,7 @@ class TeacherAssessment extends Component {
                     id="72"
                     name="twentyFive"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -915,7 +919,7 @@ class TeacherAssessment extends Component {
                     id="73"
                     name="twentyFive"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -926,7 +930,7 @@ class TeacherAssessment extends Component {
                     id="74"
                     name="twentyFive"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -944,7 +948,7 @@ class TeacherAssessment extends Component {
                     id="75"
                     name="twentySix"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -955,7 +959,7 @@ class TeacherAssessment extends Component {
                     id="76"
                     name="twentySix"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -966,7 +970,7 @@ class TeacherAssessment extends Component {
                     id="77"
                     name="twentySix"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -979,7 +983,7 @@ class TeacherAssessment extends Component {
               <td className="values">
                 The teacher’s knowledge of individual student strengths,
                 interests, backgrounds, and lives is used to engage them in the
-                project and inform instructional decision-making.{" "}
+                project and inform instructional decision-making.{' '}
               </td>
               <td>
                 <label>
@@ -989,7 +993,7 @@ class TeacherAssessment extends Component {
                     id="78"
                     name="twentySeven"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1000,7 +1004,7 @@ class TeacherAssessment extends Component {
                     id="79"
                     name="twentySeven"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1011,7 +1015,7 @@ class TeacherAssessment extends Component {
                     id="80"
                     name="twentySeven"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -1019,7 +1023,7 @@ class TeacherAssessment extends Component {
               <td className="values">
                 Students and the teacher use standards to co-define goals and
                 benchmarks for the project (e.g., by co-constructing a rubric)
-                in developmentally appropriate ways.{" "}
+                in developmentally appropriate ways.{' '}
               </td>
               <td>
                 <label>
@@ -1029,7 +1033,7 @@ class TeacherAssessment extends Component {
                     id="81"
                     name="twentyEight"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1040,7 +1044,7 @@ class TeacherAssessment extends Component {
                     id="82"
                     name="twentyEight"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1051,7 +1055,7 @@ class TeacherAssessment extends Component {
                     id="83"
                     name="twentyEight"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -1069,7 +1073,7 @@ class TeacherAssessment extends Component {
                     id="84"
                     name="twentyNine"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1080,7 +1084,7 @@ class TeacherAssessment extends Component {
                     id="85"
                     name="twentyNine"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1091,7 +1095,7 @@ class TeacherAssessment extends Component {
                     id="86"
                     name="twentyNine"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -1104,19 +1108,19 @@ class TeacherAssessment extends Component {
               <td>
                 <label>
                   <input type="radio" className="boxes" id="87" name="Thirty" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="88" name="Thirty" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
                 <label>
                   <input type="radio" className="boxes" id="89" name="Thirty" />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -1124,7 +1128,7 @@ class TeacherAssessment extends Component {
               <td className="values">
                 Appropriately high expectations for the performance of all
                 students are clearly established, shared, and reinforced by
-                teachers and students.{" "}
+                teachers and students.{' '}
               </td>
               <td>
                 <label>
@@ -1134,7 +1138,7 @@ class TeacherAssessment extends Component {
                     id="90"
                     name="ThirtyOne"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1145,7 +1149,7 @@ class TeacherAssessment extends Component {
                     id="91"
                     name="ThirtyOne"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1156,7 +1160,7 @@ class TeacherAssessment extends Component {
                     id="92"
                     name="ThirtyOne"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -1175,7 +1179,7 @@ class TeacherAssessment extends Component {
                     id="93"
                     name="ThirtyTwo"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1186,7 +1190,7 @@ class TeacherAssessment extends Component {
                     id="94"
                     name="ThirtyTwo"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1197,7 +1201,7 @@ class TeacherAssessment extends Component {
                     id="95"
                     name="ThirtyTwo"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
@@ -1216,7 +1220,7 @@ class TeacherAssessment extends Component {
                     id="96"
                     name="ThirtyThree"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1227,7 +1231,7 @@ class TeacherAssessment extends Component {
                     id="97"
                     name="ThirtyThree"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
               <td>
@@ -1238,25 +1242,23 @@ class TeacherAssessment extends Component {
                     id="98"
                     name="ThirtyThree"
                   />
-                  <div></div>
+                  <div />
                 </label>
               </td>
             </tr>
           </tbody>
         </table>
 
-        <h2
-          className="updateMessage"
-          style={{ display: this.state.showMessage }}
-        >
-          {" "}
+        <h2 className="updateMessage" style={{ display: showMessage }}>
+          {' '}
           Assessment has been updated
         </h2>
         <button
+          type="button"
           id="docUpdatebtn"
           style={{
-            color: this.props.style.btn_text,
-            background: this.props.style.btn_color
+            color: style.btn_text,
+            background: style.btn_color,
           }}
           onClick={this.updateBoxes}
           className="submit"

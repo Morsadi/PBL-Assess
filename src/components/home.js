@@ -1,22 +1,22 @@
-import React from "react";
-import { Component } from "react";
-import fire from "../config/config";
-import "firebase/auth";
-import "firebase/database";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { Component } from 'react';
+import 'firebase/auth';
+import 'firebase/database';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHome,
   faMoon,
   faSun,
   faFileAlt,
   faUser,
-  faSignOutAlt
-} from "@fortawesome/free-solid-svg-icons";
-import Teacher from "./teacher_info";
-import TeacherAssessment from "./Teacher_Assessment";
-import About from "./about";
+  faSignOutAlt,
+} from '@fortawesome/free-solid-svg-icons';
+import fire from '../config/config';
+import Teacher from './teacher_info';
+import TeacherAssessment from './Teacher_Assessment';
+import { About } from './about';
 
-const CSSTransitionGroup = require("react-transition-group/CSSTransitionGroup");
+const CSSTransitionGroup = require('react-transition-group/CSSTransitionGroup');
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -24,78 +24,84 @@ class Home extends Component {
     this.state = {
       windowHeight: window.innerHeight,
       teachers: [],
-      add_teacher_input: "",
+      addTeacherInput: '',
       style: {
-        bg_color: "#2F2F2F",
-        body_color: "#4B4B4B",
-        navBar_color: "#4B4B4B",
-        text_color: "#fff",
-        icon_color: "#C4C4C4",
-        input_bgColor: "#2F2F2F",
-        btn_color: "none",
-        btn_text: "#B0B0B0",
-        btn_hover_color: "#B0B0B0",
-        active_opacity: "1",
-        none_active_opacity: "0.4"
+        bg_color: '#2F2F2F',
+        body_color: '#4B4B4B',
+        navBar_color: '#4B4B4B',
+        text_color: '#fff',
+        icon_color: '#C4C4C4',
+        input_bgColor: '#2F2F2F',
+        btn_color: 'none',
+        btn_text: '#B0B0B0',
+        btn_hover_color: '#B0B0B0',
+        active_opacity: '1',
+        none_active_opacity: '0.4',
       },
       teacher: {
-        id: "",
-        name: "",
-        gender: "",
-        age: "",
-        phone: "",
-        email: "",
-        country: ""
+        id: '',
+        name: '',
+        gender: '',
+        age: '',
+        phone: '',
+        email: '',
+        country: '',
       },
-      is_profile_active: false,
-      is_doc_active: false,
-      is_home_active: true,
-      isIt_night: true,
-      isIt_day: false,
-      infoMsg: "",
-      userId: ""
+      isProfileActive: false,
+      isDocActive: false,
+      isHomeActive: true,
+      isItNight: true,
+      isItDay: false,
+      userId: '',
     };
 
-    //binding functions
-
-    this.addteacher = this.addteacher.bind(this);
-    this.fetch = this.fetch.bind(this);
-    this.clearteachers = this.clearteachers.bind(this);
-    this.toggleProfile = this.toggleProfile.bind(this);
-    this.loadData = this.loadData.bind(this);
+    // binding functions
 
     //----------
   }
-
-  //event handling for the child component
-  updateTeacher = (property, value) => {
-    this.setState({
-      ...this.state,
-      teacher: {
-        ...this.state.teacher,
-        [property]: value
-      }
-    });
-  };
 
   componentDidMount() {
     this.loadData();
   }
 
-  //fetching the saved teachers onlaod
-  loadData() {
-    //if logged in, fetch data based on the user id
+  // unmout events when logout
+  componentWillUnmount() {
+    this.authListener();
+  }
+
+  // event handling for the child component
+  updateTeacher = (property, value) => {
+    const { teacher } = this.state;
+    this.setState({
+      teacher: {
+        ...teacher,
+        [property]: value,
+      },
+    });
+  };
+
+  // add teacher when click on Enter
+  onEnterPress = e => {
+    if (e === 'Enter') {
+      e.preventDefault();
+      this.submit();
+    }
+  };
+
+  // fetching the saved teachers onlaod
+  loadData = () => {
+    // if logged in, fetch data based on the user id
     this.authListener = fire.auth().onAuthStateChanged(user => {
       if (user) {
-        this.database = fire.database().ref(user.uid + "/teachersInfo");
+        this.database = fire.database().ref(`${user.uid}/teachersInfo`);
 
         this.setState({
-          userId: user.uid
+          userId: user.uid,
         });
 
-        //disable delete btn onload
-        const confirmBtn = document.getElementById("confirmBtn");
-        const updateBtn = document.getElementById("updateBtn");
+        // disable delete btn onload
+        const confirmBtn = document.getElementById('confirmBtn');
+        const updateBtn = document.getElementById('updateBtn');
 
         if (confirmBtn) {
           confirmBtn.disabled = true;
@@ -104,82 +110,76 @@ class Home extends Component {
           updateBtn.disabled = true;
         }
 
-        this.database.on("value", data => {
+        this.database.on('value', data => {
           const teachers = data.val();
-          let teacherList = [];
-          //loop through teachers
+          const teacherList = [];
+          // loop through teachers using keys
           if (teachers) {
-            let keys = Object.keys(teachers);
+            const keys = Object.keys(teachers);
+
             for (let i in keys) {
               let individualKey = keys[i];
 
               teacherList.push({
                 id: individualKey,
-                name: teachers[individualKey].full_name
+                name: teachers[individualKey].full_name,
               });
             }
 
             this.setState({
-              teachers: teacherList
+              teachers: teacherList,
             });
           }
         });
       }
     });
-  }
+  };
 
-  //sync input
-  update_teacher_input(event) {
-    let value = event.target.value;
+  // sync input
+  updateTeacherInput = event => {
+    let { value } = event.target;
 
-    //capitalize first letter of each word
+    // capitalize first letter of each word
     value = value
       .toLowerCase()
-      .split(" ")
+      .split(' ')
       .map(s => s.charAt(0).toUpperCase() + s.substring(1))
-      .join(" ");
+      .join(' ');
 
     this.setState({
-      add_teacher_input: value
+      addTeacherInput: value,
     });
-  }
+  };
 
-  //push the new teacher to the database
-  addteacher(e) {
+  // push the new teacher to the database
+  addteacher = e => {
+    const { addTeacherInput } = this.state;
     e.preventDefault();
     this.database.push().set({
-      full_name: this.state.add_teacher_input,
-      age: "",
-      gender: "",
-      phone: "",
-      email: "",
-      country: ""
+      full_name: addTeacherInput,
+      age: '',
+      gender: '',
+      phone: '',
+      email: '',
+      country: '',
     });
-    //reset input
+    // reset input
     this.setState({
-      add_teacher_input: ""
+      addTeacherInput: '',
     });
 
     setTimeout(() => {
-      const allteacher = document.getElementsByClassName("teacherList");
-      let lastteacher = allteacher[allteacher.length - 1];
+      const allteacher = document.getElementsByClassName('teacherList');
+      const lastteacher = allteacher[allteacher.length - 1];
       lastteacher.click();
     }, 500);
-  }
-
-  //add teacher when click on Enter
-  onEnterPress = e => {
-    if (e === "Enter") {
-      e.preventDefault();
-      this.submit();
-    }
   };
 
-  //selecting a teacher
-  fetch(e) {
-    //enable delete btn after selecting a teacher
-    const confirmBtn = document.getElementById("confirmBtn");
-    const updateBtn = document.getElementById("updateBtn");
+  // Press name to collect and display data
+  fetch = e => {
+    // enable delete btn after selecting a teacher
+    const confirmBtn = document.getElementById('confirmBtn');
+    const updateBtn = document.getElementById('updateBtn');
 
     if (confirmBtn) {
       confirmBtn.disabled = false;
@@ -187,167 +187,177 @@ class Home extends Component {
     }
 
     this.setState({
-      is_profile_active: true,
-      is_doc_active: false,
-      is_home_active: false
+      isProfileActive: true,
+      isDocActive: false,
+      isHomeActive: false,
     });
     const index = e.target.id;
     setTimeout(() => {
-      this.database.once("value", e => {
-        let teacher = e.val()[index];
+      this.database.once('value', e => {
+        const teacher = e.val()[index];
 
-        const teacher_name = teacher.full_name;
-        const age = teacher.age;
-        const gender = teacher.gender;
-        const email = teacher.email;
-        const phone = teacher.phone;
-        const country = teacher.country;
+        const teacherName = teacher.full_name;
+        const { age } = teacher;
+        const { gender } = teacher;
+        const { email } = teacher;
+        const { phone } = teacher;
+        const { country } = teacher;
 
         this.setState({
+          // using Object Literal Shorthand Syntax
           teacher: {
             id: index,
-            name: teacher_name,
-            age: age,
-            gender: gender,
-            email: email,
-            phone: phone,
-            country: country
-          }
+            name: teacherName,
+            age,
+            gender,
+            email,
+            phone,
+            country,
+          },
         });
       });
     }, 10);
+  };
 
-    //display the current teacher when press profile
-  }
-
-  //show profile section
-  showProfile() {
+  // show profile section
+  showProfile = () => {
+    const { teacher } = this.state;
     this.setState({
-      is_profile_active: true,
-      is_doc_active: false,
-      is_home_active: false
+      isProfileActive: true,
+      isDocActive: false,
+      isHomeActive: false,
     });
 
-    //display the current teacher when press profile
-    const clickedteacher = document.getElementById(this.state.teacher.id);
+    // display the current teacher when press profile
+    const clickedteacher = document.getElementById(teacher.id);
     setTimeout(() => {
       if (clickedteacher) {
         clickedteacher.click();
       }
     }, 100);
-  }
-  //show grades section
-  showDoc() {
-    this.setState({
-      is_profile_active: false,
-      is_doc_active: true,
-      is_home_active: false
-    });
-  }
-  //show home section
-  showHome() {
-    this.setState({
-      is_profile_active: false,
-      is_doc_active: false,
-      is_home_active: true
-    });
-  }
+  };
 
-  //funtion is passed to the delete button in order to clear the teachers when all of them are deleted from the database
-  clearteachers() {
+  // show grades section
+  showDoc = () => {
+    this.setState({
+      isProfileActive: false,
+      isDocActive: true,
+      isHomeActive: false,
+    });
+  };
+
+  // show home section
+  showHome = () => {
+    this.setState({
+      isProfileActive: false,
+      isDocActive: false,
+      isHomeActive: true,
+    });
+  };
+
+  // funtion is passed to the delete button in order to clear
+  // the teachers when all of them are deleted from the database
+  clearteachers = () => {
     this.setState({
       teacher: {
-        id: "",
-        name: "",
-        gender: "",
-        age: "",
-        phone: "",
-        email: "",
-        country: ""
+        id: '',
+        name: '',
+        gender: '',
+        age: '',
+        phone: '',
+        email: '',
+        country: '',
       },
-      teachers: []
+      teachers: [],
     });
-  }
+  };
 
-  //hide and show when deleting teachers
-  toggleProfile(val) {
+  // hide and show when deleting teachers
+  toggleProfile = val => {
     this.setState({
-      is_profile_active: val
+      isProfileActive: val,
     });
-  }
+  };
 
-  logOut() {
+  logOut = () => {
     fire.auth().signOut();
-  }
+  };
 
-  bringDay() {
+  bringDay = () => {
+    const { style } = this.state;
     this.setState({
       style: {
-        // using [...] to change only the new keys, otherwise it would replace the whole array wiht the new one, losing the old keys that werent addressed.
-        ...this.state.style,
-        bg_color: "#BFBFBF",
-        body_color: "#FFFFFF",
-        navBar_color: "#6290C3",
-        text_color: "#727272",
-        icon_color: "#FFFFFF",
-        input_bgColor: "#e6e6e6",
-        btn_color: "#6290C3",
-        btn_text: "#fff"
+        ...style,
+        bg_color: '#BFBFBF',
+        body_color: '#FFFFFF',
+        navBar_color: '#6290C3',
+        text_color: '#727272',
+        icon_color: '#FFFFFF',
+        input_bgColor: '#e6e6e6',
+        btn_color: '#6290C3',
+        btn_text: '#fff',
       },
 
-      isIt_day: true,
-      isIt_night: false
+      isItDay: true,
+      isItNight: false,
     });
-  }
-  bringNight() {
+  };
+
+  bringNight = () => {
+    const { style } = this.state;
     this.setState({
       style: {
-        // using [...] to change only the new keys, otherwise it would replace the whole array wiht the new one, losing the old keys that werent addressed.
-        ...this.state.style,
-        bg_color: "#2F2F2F",
-        body_color: "#4B4B4B",
-        navBar_color: "#4B4B4B",
-        text_color: "#fff",
-        icon_color: "#C4C4C4",
-        input_bgColor: "#2F2F2F",
-        btn_color: "none",
-        btn_text: "#B0B0B0"
+        ...style,
+        bg_color: '#2F2F2F',
+        body_color: '#4B4B4B',
+        navBar_color: '#4B4B4B',
+        text_color: '#fff',
+        icon_color: '#C4C4C4',
+        input_bgColor: '#2F2F2F',
+        btn_color: 'none',
+        btn_text: '#B0B0B0',
       },
 
-      isIt_day: false,
-      isIt_night: true
+      isItDay: false,
+      isItNight: true,
     });
-  }
-
-  //unmout events when logout
-  componentWillUnmount() {
-    this.authListener();
-  }
+  };
 
   // update
   render() {
+    const {
+      windowHeight,
+      style,
+      addTeacherInput,
+      isItDay,
+      isItNight,
+      isDocActive,
+      isHomeActive,
+      isProfileActive,
+      teachers,
+      teacher,
+      userId,
+    } = this.state;
+
     return (
       <div
         style={{
-          height: this.state.windowHeight,
-          background: this.state.style.bg_color,
-          color: this.state.style.text_color
+          height: windowHeight,
+          background: style.bg_color,
+          color: style.text_color,
         }}
         className="grid"
       >
-        <div
-          style={{ background: this.state.style.body_color }}
-          className="teacher_input"
-        >
+        <div style={{ background: style.body_color }} className="teacher_input">
           <form>
             <input
               style={{
-                color: this.state.style.text_color,
-                background: this.state.style.input_bgColor
+                color: style.text_color,
+                background: style.input_bgColor,
               }}
               onKeyDown={this.onEnterPress}
-              onChange={this.update_teacher_input.bind(this)}
-              value={this.state.add_teacher_input}
+              onChange={this.updateTeacherInput.bind(this)}
+              value={addTeacherInput}
               type="textArea"
               placeholder="New teacher"
             />
@@ -357,87 +367,84 @@ class Home extends Component {
           </form>
         </div>
 
-        <div
-          style={{ background: this.state.style.navBar_color }}
-          className="controls"
-        >
+        <div style={{ background: style.navBar_color }} className="controls">
           <div className="leftControls">
             <FontAwesomeIcon
               style={{
-                opacity: this.state.is_home_active
-                  ? this.state.style.active_opacity
-                  : this.state.style.none_active_opacity,
-                color: this.state.style.icon_color
+                opacity: isHomeActive
+                  ? style.active_opacity
+                  : style.none_active_opacity,
+                color: style.icon_color,
               }}
-              onClick={this.showHome.bind(this)}
+              onClick={this.showHome}
               className="fas home"
               icon={faHome}
             />
             <FontAwesomeIcon
               style={{
-                opacity: this.state.isIt_night
-                  ? this.state.style.active_opacity
-                  : this.state.style.none_active_opacity,
-                color: this.state.style.icon_color
+                opacity: isItNight
+                  ? style.active_opacity
+                  : style.none_active_opacity,
+                color: style.icon_color,
               }}
               className="fas night"
               icon={faMoon}
-              onClick={this.bringNight.bind(this)}
+              onClick={this.bringNight}
             />
             <FontAwesomeIcon
               style={{
-                opacity: this.state.isIt_day
-                  ? this.state.style.active_opacity
-                  : this.state.style.none_active_opacity,
-                color: this.state.style.icon_color
+                opacity: isItDay
+                  ? style.active_opacity
+                  : style.none_active_opacity,
+                color: style.icon_color,
               }}
               className="fas day"
               icon={faSun}
-              onClick={this.bringDay.bind(this)}
+              onClick={this.bringDay}
             />
           </div>
 
           <div className="centralControls">
             <FontAwesomeIcon
               style={{
-                opacity: this.state.is_profile_active
-                  ? this.state.style.active_opacity
-                  : this.state.style.none_active_opacity,
-                color: this.state.style.icon_color
+                opacity: isProfileActive
+                  ? style.active_opacity
+                  : style.none_active_opacity,
+                color: style.icon_color,
               }}
-              onClick={this.showProfile.bind(this)}
+              onClick={this.showProfile}
               className="fas profile"
               icon={faUser}
               id="profile"
             />
             <FontAwesomeIcon
               style={{
-                opacity: this.state.is_doc_active
-                  ? this.state.style.active_opacity
-                  : this.state.style.none_active_opacity,
-                color: this.state.style.icon_color
+                opacity: isDocActive
+                  ? style.active_opacity
+                  : style.none_active_opacity,
+                color: style.icon_color,
               }}
-              onClick={this.showDoc.bind(this)}
+              onClick={this.showDoc}
               className="fas file"
               icon={faFileAlt}
             />
           </div>
 
           <FontAwesomeIcon
-            onClick={this.logOut.bind(this)}
+            onClick={this.logOut}
             className="fas signOutAlt"
             icon={faSignOutAlt}
             style={{
-              opacity: this.state.is_profile_active
-                ? this.state.style.active_opacity
-                : this.state.style.none_active_opacity,
-              color: this.state.style.icon_color
+              opacity: isProfileActive
+                ? style.active_opacity
+                : style.none_active_opacity,
+              color: style.icon_color,
             }}
           />
         </div>
 
         <div
-          style={{ background: this.state.style.body_color }}
+          style={{ background: style.body_color }}
           className="teachers_column"
         >
           <CSSTransitionGroup
@@ -445,70 +452,56 @@ class Home extends Component {
             transitionEnterTimeout={500}
             transitionLeaveTimeout={500}
           >
-            {this.state.teachers.map((e, key) => {
-              return (
-                <p
-                  key={key}
-                  onClick={this.fetch}
-                  ref={this.remoteClick}
-                  className={
-                    this.state.teacher.id === e.id
-                      ? "active teacherList"
-                      : "teacherList"
-                  }
-                  id={e.id}
-                >
-                  {e.name}
-                </p>
-              );
-            })}
+            {teachers.map((e, key) => (
+              <p
+                key={key}
+                onClick={this.fetch}
+                ref={this.remoteClick}
+                className={
+                  teacher.id === e.id ? 'active teacherList' : 'teacherList'
+                }
+                id={e.id}
+              >
+                {e.name}
+              </p>
+            ))}
           </CSSTransitionGroup>
         </div>
 
         <div
           style={{
-            background: this.state.style.body_color,
-            borderColor: this.state.style.body_color
+            background: style.body_color,
+            borderColor: style.body_color,
           }}
           className="teacher_info"
         >
-          {this.state.is_profile_active ? (
+          {isProfileActive ? (
             <Teacher
               updateTeacher={this.updateTeacher}
-              teacher={this.state.teacher}
+              teacher={teacher}
               teacherRef={fire
                 .database()
-                .ref(
-                  this.state.userId + `/teachersInfo/${this.state.teacher.id}`
-                )}
-              database={fire
-                .database()
-                .ref(this.state.userId + "/teachersInfo")}
-              teachers={this.state.teachers}
+                .ref(`${userId}/teachersInfo/${teacher.id}`)}
+              database={fire.database().ref(`${userId}/teachersInfo`)}
+              teachers={teachers}
               clearteachers={this.clearteachers}
               toggleProfile={this.toggleProfile}
-              style={this.state.style}
+              style={style}
             />
           ) : null}
 
-          {this.state.is_doc_active ? (
+          {isDocActive ? (
             <TeacherAssessment
               teacherRef={fire
                 .database()
-                .ref(
-                  this.state.userId + `/teachersInfo/${this.state.teacher.id}`
-                )}
-              teacher={this.state.teacher}
-              database={fire
-                .database()
-                .ref(this.state.userId + "/teachersInfo")}
-              style={this.state.style}
+                .ref(`${userId}/teachersInfo/${teacher.id}`)}
+              teacher={teacher}
+              database={fire.database().ref(`${userId}/teachersInfo`)}
+              style={style}
             />
           ) : null}
 
-          {this.state.is_home_active ? (
-            <About style={this.state.style} />
-          ) : null}
+          {isHomeActive ? <About style={style} /> : null}
         </div>
       </div>
     );
