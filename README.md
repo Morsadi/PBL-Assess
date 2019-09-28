@@ -7,5 +7,5 @@ This prototype was inspired by PBLWorks organization encouraging teachers and sc
   <img width="600" src="https://i.ibb.co/xFSrL7X/pblrSnap.png">
 </p>
 <p align="center">
-Live Preview: https://pblr.netlify.com.
+Live Preview: https://pblr.netlify.com
 </p>
