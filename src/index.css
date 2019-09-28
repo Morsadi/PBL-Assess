@@ -387,3 +387,12 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.loginInfo{
+  text-align: left;
+  color: white;
+  margin: 100px auto;
+  width: 30%;
+  background:#464646;
+
+  padding: 10px 40px;
+}

@@ -65,6 +65,20 @@ class Login extends Component {
             value="LOGIN"
           />
         </form>
+        <div className='loginInfo'>
+          <p>
+            <strong>Note</strong>
+            <br />
+            To test this prototype, please find the authentification information bellow:
+            <br />
+            <br />
+            <strong>LOGIN: </strong>
+            test@gmail.com
+            <br />
+            <strong>PASSWORD: </strong>
+            test123
+          </p>
+        </div>
       </div>
     );
   }

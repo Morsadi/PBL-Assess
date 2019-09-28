@@ -27,27 +27,31 @@ class App extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.fireBaseListener();
+  }
+
   authListener() {
     this.fireBaseListener = fire.auth().onAuthStateChanged(user => {
       if (user) {
-        this.setState({ user: user, userId: user.uid });
+        this.setState({ user, userId: user.uid });
       } else {
         this.setState({ user: null });
       }
     });
   }
 
-  componentWillUnmount() {
-    this.fireBaseListener();
-  }
+ 
 
   render() {
-    return !this.state.isMobile ? (<div>{this.state.user ? <Home /> : <Login />}</div>) : 
-    (
-      <div className="mobileVersion">
-        <h2>Mobile version coming soon.</h2>
-      </div>
-    );
+    const { isMobile, user } = this.state;
+
+    return !isMobile ? (<div>{user ? <Home /> : <Login />}</div>) : 
+      (
+        <div className="mobileVersion">
+          <h2>Mobile version coming soon.</h2>
+        </div>
+      );
   }
 }
 
