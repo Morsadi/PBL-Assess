@@ -231,9 +231,9 @@ th {
 }
 
 table label {
-  position: relative;
-  cursor: pointer;
-  text-align: center;
+  position: relative !important;
+  cursor: pointer !important;
+  text-align: center !important;
 }
 
 table label input {
