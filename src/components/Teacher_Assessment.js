@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import TableData from './tableData';
 import 'firebase/database';
 import 'firebase/storage';
 
@@ -10,35 +10,44 @@ class TeacherAssessment extends Component {
     this.state = {
       showMessage: 'none',
     };
-
-    this.updateBoxes = this.updateBoxes.bind(this);
   }
 
   componentDidMount() {
+    this.load()
+
+  }
+
+  // clear interval
+  componentWillUnmount() {
+    clearTimeout(this.hideMsg);
+    clearTimeout(this.reload)
+  }
+
+  load = () => {
     const { teacherRef } = this.props;
     // onload, import the ids of the checkboxes stored in firebase and activate them in DOM
 
     teacherRef.once('value', data => {
       const teacher = data.val();
-      if (teacher) {
-        const { boxes } = teacher;
 
-        for (const i in boxes) {
-          const boxId = boxes[i];
-          const input = document.getElementById(boxId);
+      const { boxes } = teacher;
 
+      if (boxes) {
+        boxes.map((box) => {
+          const input = document.getElementById(box)
           input.checked = true;
-        }
+          return false
+        })
       }
+
+      
     });
+
   }
 
-  // clear interval
-  componentWillUnmount() {
-    clearInterval(this.hideMsg);
-  }
 
-  updateBoxes() {
+  updateBoxes = () => {
+
     const { teacher, teacherRef } = this.props;
 
     // if teacher is active and update button is clicked, loop through all the checkboxes and push then to one array
@@ -47,11 +56,10 @@ class TeacherAssessment extends Component {
 
       const boxesChecked = [];
 
-      for (const i in boxes) {
-        if (boxes[i].checked) {
-          boxesChecked.push(boxes[i].id);
-        }
-      }
+      Object.keys(boxes).map((box) => (
+        boxes[box].checked ? boxesChecked.push(boxes[box].id) : null
+      ))
+
       // push the array to firebase
       teacherRef.update({
         boxes: boxesChecked,
@@ -67,8 +75,15 @@ class TeacherAssessment extends Component {
         this.setState({
           showMessage: 'none',
         });
+        this.load()
       }, 3000);
     }
+
+    this.reload = setTimeout(() => {
+
+      this.load()
+    }, 1)
+
   }
 
   render() {
@@ -77,1191 +92,129 @@ class TeacherAssessment extends Component {
     return (
       <div style={{ textAlign: 'center', color: style.text_color }}>
         <h1 style={{ marginBottom: '80px' }}>PROJECT BASED TEACHING RUBRIC</h1>
+
         <table>
           <thead>
             <tr>
-              <th className="hide" />
-              <th className="hide" />
-              <th>Novice </th>
-              <th>Specialist</th>
-              <th>Master</th>
+              {TableData[0].thead.map((head) => (
+                <th className={head === ' ' ? 'hide' : ''} key={Math.random()}>{head || ' '}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="categories" rowSpan="3">
-                Design and Plan
-              </td>
-              <td className="values">
-                Project includes all Essential Project Design Elements as
-                described on the Project Design Rubric.
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="1" name="one" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="2" name="one" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="3" name="one" />
-                  <div />
-                </label>
-              </td>
-            </tr>
+            {/* loop through each sequence */}
+            {TableData[1].tbody.map(sequence =>
+              sequence.descriptions.map((desc, descIndex) =>
+                // if this is the very first value, add the head description that contains the rowspan feature, if not, add the rest without the head.
+                // using Math.random() to generate keys just because there will be no reordering
+                (descIndex === 0 ? (
+                  <tr key={Math.random()}>
+                    <td
+                      key={Math.random()}
+                      className='categories'
+                      rowSpan={sequence.descriptions.length}
+                    >
+                      {sequence.head}
+                    </td>
+                    <td className='values' key={Math.random()}>
+                      {desc}
+                    </td>
 
-            <tr>
-              <td className="values">
-                Plans are detailed and include scaffolding and assessing student
-                learning and a project calendar, which remains flexible to meet
-                student needs.
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="4" name="two" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="5" name="two" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="6" name="two" />
-                  <div />
-                </label>
-              </td>
-            </tr>
+                    <td key={Math.random()}>
+                      <label>
+                        <input
+                          type='radio'
+                          className='boxes'
+                          name={sequence.ids[descIndex]}
+                          id={sequence.ids[descIndex]}
+                        />
+                        <div />
+                      </label>
+                    </td>
 
-            <tr>
-              <td className="values">
-                Resources for the project have been anticipated to the fullest
-                extent possible and arranged well in advance.
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="7" name="three" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="8" name="three" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="9" name="three" />
-                  <div />
-                </label>
-              </td>
-            </tr>
+                    <td key={Math.random()}>
+                      <label>
+                        <input
+                          type='radio'
+                          className='boxes'
+                          name={sequence.ids[descIndex]}
+                          id={sequence.ids[descIndex] + 1}
+                        />
+                        <div />
+                      </label>
+                    </td>
 
-            <tr>
-              <td className="categories" rowSpan="2">
-                Align to Standards
-              </td>
-              <td className="values">
-                Criteria for products are clearly and specifically derived from
-                standards and allows demonstration of mastery.{' '}
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="10" name="four" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="11" name="four" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="12" name="four" />
-                  <div />
-                </label>
-              </td>
-            </tr>
+                    <td key={Math.random()}>
+                      <label>
+                        <input
+                          type='radio'
+                          className='boxes'
+                          name={sequence.ids[descIndex]}
+                          id={sequence.ids[descIndex] + 2}
+                        />
+                        <div />
+                      </label>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr key={Math.random()}>
+                    <td className='values'>{desc}</td>
 
-            <tr>
-              <td className="values">
-                Scaffolding of student learning, critique and revision
-                protocols, assessments and rubrics consistently refer to and
-                support student achievement of specific standards.
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="13" name="five" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="14" name="five" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="15" name="five" />
-                  <div />
-                </label>
-              </td>
-            </tr>
+                    <td key={Math.random()}>
+                      <label>
+                        <input
+                          type='radio'
+                          className='boxes'
+                          name={sequence.ids[descIndex]}
+                          id={sequence.ids[descIndex]}
+                          key={sequence.ids[descIndex]}
+                        />
+                        <div />
+                      </label>
+                    </td>
 
-            <tr>
-              <td className="categories" rowSpan="6">
-                Build the Culture
-              </td>
-              <td className="values">
-                Norms to guide the classroom are co-crafted with and
-                self-monitored by students.
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="16" name="six" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="17" name="six" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="18" name="six" />
-                  <div />
-                </label>
-              </td>
-            </tr>
+                    <td key={Math.random()}>
+                      <label>
+                        <input
+                          type='radio'
+                          className='boxes'
+                          name={sequence.ids[descIndex]}
+                          id={sequence.ids[descIndex] + 1}
+                        />
+                        <div />
+                      </label>
+                    </td>
 
-            <tr>
-              <td className="values">
-                Student voice and choice is regularly leveraged and ongoing,
-                including identification of real-world issues and problems
-                students want to address in projects.{' '}
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="19" name="seven" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="20" name="seven" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="21" name="seven" />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Students usually know what they need to do with minimal
-                direction from the teacher.
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="22" name="eight" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="23" name="eight" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="24" name="eight" />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Students work collaboratively in healthy, high-functioning
-                teams, much like an authentic work environment; the teacher
-                rarely needs to be involved in managing teams.
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="25" name="nine" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="26" name="nine" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="27" name="nine" />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Students understand there is no single “right answer” or
-                preferred way to do the project, and that it is OK to take
-                risks, make mistakes, and learn from them.
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="28" name="ten" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="29" name="ten" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="30" name="ten" />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                The values of critique and revision, persistence, rigorous
-                thinking, and pride in doing high-quality work are shared, and
-                students hold each other accountable to them.
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="31" name="eleven" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="32" name="eleven" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="33" name="eleven" />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="categories" rowSpan="5">
-                Manage Activities
-              </td>
-
-              <td className="values">
-                The classroom features an appropriate mixture of individual and
-                team work time, whole group and small group instruction.{' '}
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="34" name="twelve" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="35" name="twelve" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="36" name="twelve" />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Classroom routines and norms are consistently followed during
-                project work time to maximize productivity.
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="37"
-                    name="thriteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="38"
-                    name="thriteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="39"
-                    name="thriteen"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Project management tools (group calendar, contract, learning
-                log, etc.) are used to support student selfmanagement and
-                independence.
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="40"
-                    name="fourteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="41"
-                    name="fourteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="42"
-                    name="fourteen"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Realistic schedules, checkpoints, and deadlines are set but
-                flexible; no bottlenecks impede workflow.
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="43"
-                    name="fifteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="44"
-                    name="fifteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="45"
-                    name="fifteen"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Well-balanced teams are formed according to the nature of the
-                project and student needs, with appropriate student voice and
-                choice.
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="46"
-                    name="sixteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="47"
-                    name="sixteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="48"
-                    name="sixteen"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="categories" rowSpan="4">
-                Scaffold Student Learning
-              </td>
-
-              <td className="values">
-                Each student receives necessary instructional supports to access
-                content, skills, and resources; these supports are removed when
-                no longer needed.{' '}
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="49"
-                    name="seventeen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="50"
-                    name="seventeen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="51"
-                    name="seventeen"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Scaffolding is guided as much as possible by students’ questions
-                and needs; teacher does not “front-load” too much information at
-                the start of the project, but waits until it is needed or
-                requested by students.{' '}
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="52"
-                    name="eighteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="53"
-                    name="eighteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="54"
-                    name="eighteen"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Key success skills are taught using a variety of tools and
-                strategies; students are provided with opportunities to practice
-                and apply them, and reflect on progress.{' '}
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="55"
-                    name="nineteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="56"
-                    name="nineteen"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="57"
-                    name="nineteen"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Student inquiry is facilitated and scaffolded, while allowing
-                students to act and think as independently as possible.{' '}
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="58" name="twenty" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="100"
-                    name="twenty"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="59" name="twenty" />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="categories" rowSpan="6">
-                Assess Student Learning
-              </td>
-
-              <td className="values">
-                Project products and other sources of evidence are used to
-                thoroughly assess subject-area standards as well as success
-                skills.{' '}
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="60"
-                    name="twentyOne"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="61"
-                    name="thwentyOne"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="62"
-                    name="thwentyOne"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Individual student learning is adequately assessed, not just
-                team-created products.{' '}
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="63"
-                    name="twentyTwo"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="64"
-                    name="twentyTwo"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="65"
-                    name="twentyTwo"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Formative assessment is used regularly and frequently, with a
-                variety of tools and processes.{' '}
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="66"
-                    name="twentyThree"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="67"
-                    name="twentyThree"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="68"
-                    name="twentyThree"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Structured protocols for critique and revision are used
-                regularly at checkpoints; students give and receive effective
-                feedback to inform instructional decisions and students’
-                actions.{' '}
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="69"
-                    name="twentyFour"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="70"
-                    name="twentyFour"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="71"
-                    name="twentyFour"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="values">
-                Regular, structured opportunities are provided for students to
-                self-assess their progress and, when appropriate, assess peers
-                on their performance.{' '}
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="72"
-                    name="twentyFive"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="73"
-                    name="twentyFive"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="74"
-                    name="twentyFive"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td className="values">
-                Standards-aligned rubrics are used by students and the teacher
-                throughout the project to guide both formative and summative
-                assessment.
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="75"
-                    name="twentySix"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="76"
-                    name="twentySix"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="77"
-                    name="twentySix"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="categories" rowSpan="7">
-                Engage and Coach
-              </td>
-
-              <td className="values">
-                The teacher’s knowledge of individual student strengths,
-                interests, backgrounds, and lives is used to engage them in the
-                project and inform instructional decision-making.{' '}
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="78"
-                    name="twentySeven"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="79"
-                    name="twentySeven"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="80"
-                    name="twentySeven"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td className="values">
-                Students and the teacher use standards to co-define goals and
-                benchmarks for the project (e.g., by co-constructing a rubric)
-                in developmentally appropriate ways.{' '}
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="81"
-                    name="twentyEight"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="82"
-                    name="twentyEight"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="83"
-                    name="twentyEight"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td className="values">
-                Students’ enthusiasm and sense of ownership of the project is
-                maintained by the shared nature of the work between teachers and
-                students.
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="84"
-                    name="twentyNine"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="85"
-                    name="twentyNine"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="86"
-                    name="twentyNine"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td className="values">
-                Student questions play the central role in driving the inquiry
-                and product development process; the driving question is
-                actively used to sustain inquiry.
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="87" name="Thirty" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="88" name="Thirty" />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input type="radio" className="boxes" id="89" name="Thirty" />
-                  <div />
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td className="values">
-                Appropriately high expectations for the performance of all
-                students are clearly established, shared, and reinforced by
-                teachers and students.{' '}
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="90"
-                    name="ThirtyOne"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="91"
-                    name="ThirtyOne"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="92"
-                    name="ThirtyOne"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td className="values">
-                Individual student needs are identified through close
-                relationships built with the teacher; needs are met not only by
-                the teacher but by students themselves or other students, acting
-                independently.
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="93"
-                    name="ThirtyTwo"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="94"
-                    name="ThirtyTwo"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="95"
-                    name="ThirtyTwo"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td className="values">
-                Students and the teacher reflect regularly and formally
-                throughout the project on what and how students are learning
-                (content and process); they specifically note and celebrate
-                gains and accomplishments.
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="96"
-                    name="ThirtyThree"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="97"
-                    name="ThirtyThree"
-                  />
-                  <div />
-                </label>
-              </td>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    className="boxes"
-                    id="98"
-                    name="ThirtyThree"
-                  />
-                  <div />
-                </label>
-              </td>
-            </tr>
+                    <td key={Math.random()}>
+                      <label>
+                        <input
+                          type='radio'
+                          className='boxes'
+                          name={sequence.ids[descIndex]}
+                          id={sequence.ids[descIndex] + 2}
+                        />
+                        <div />
+                      </label>
+                    </td>
+                  </tr>
+                )),
+              ),
+            )}
           </tbody>
         </table>
 
-        <h2 className="updateMessage" style={{ display: showMessage }}>
-          {' '}
+        <h2 className='updateMessage' style={{ display: showMessage }}>
           Assessment has been updated
         </h2>
         <button
-          type="button"
-          id="docUpdatebtn"
+          type='button'
+          id='docUpdatebtn'
           style={{
             color: style.btn_text,
             background: style.btn_color,
           }}
           onClick={this.updateBoxes}
-          className="submit"
+          className='submit'
         >
           Update
         </button>
