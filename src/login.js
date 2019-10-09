@@ -69,7 +69,7 @@ class Login extends Component {
           <p>
             <strong>Note</strong>
             <br />
-            To test this prototype, please find the authentification information bellow:
+            To test this prototype, please find the login information bellow:
             <br />
             <br />
             <strong>LOGIN: </strong>
